@@ -13,7 +13,12 @@
     "@types/node": "^16.11.17",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
+    "body-parser": "^1.19.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "googleapis": "^92.0.0",
     "history": "^5.2.0",
+    "pug": "^3.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
@@ -47,6 +52,8 @@
     ]
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.2",
+    "@types/cors": "^2.8.12",
     "autoprefixer": "^10.4.0",
     "nodemon": "^2.0.15",
     "postcss": "^8.4.5",

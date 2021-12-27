@@ -14,11 +14,15 @@ export default function GoogleAuth() {
     />
   )
 }
+const serverUrl = 'http://localhost:8080/'
 const handleLogin = async googleData => {
-  const res = await fetch('/api/v1/auth/google', {
+  console.log(googleData);
+  console.log("Handling Login");
+  const res = await fetch(serverUrl + 'api/v1/auth/google', {
     method: 'POST',
     body: JSON.stringify({
-      token: googleData.tokenId
+      token: googleData.tokenId,
+      ok: "BOB IS COOL"
     }),
     headers: {
       'Content-Type': 'application/json'
