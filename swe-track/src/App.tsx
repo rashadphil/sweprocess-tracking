@@ -32,7 +32,7 @@ function App() {
   ))
 
   return (
-    <div className="App">
+    <div className="App bg-gray-50 dark:bg-gray-700">
       <Navbar />
       <Dashboard entries={tableEntries}/>
     </div>

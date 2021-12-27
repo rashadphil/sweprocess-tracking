@@ -1,9 +1,9 @@
 export default function Table({ entries }: any) {
   return (
-    <div className="bg-white shadow-md rounded my-6">
+    <div className="bg-white dark:bg-gray-700 shadow-md rounded my-6">
       <table className="min-w-max w-full table-auto">
         <thead>
-          <tr className="bg-white-100 border-black border-b text-black uppercase text-sm leading-normal">
+          <tr className="bg-white dark:bg-gray-800 border-black border-b text-black dark:text-white uppercase text-sm leading-normal">
             <th className="py-3 px-6 text-left">Company</th>
             <th className="py-3 px-6 text-center">Status</th>
             <th className="py-3 px-6 text-left">Date Applied</th>
@@ -11,7 +11,7 @@ export default function Table({ entries }: any) {
           </tr>
           {entries}
         </thead>
-        <tbody className="text-gray-600 text-sm font-light"></tbody>
+        <tbody className="text-gray-600 dark:text-white text-sm font-light"></tbody>
       </table>
     </div>
   )
