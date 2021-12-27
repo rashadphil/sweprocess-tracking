@@ -10,10 +10,17 @@ function App() {
     status: string
     dateApplied: Date
   }[] = [
+    { company: 'Datadog', status: 'Offer', dateApplied: new Date() },
     { company: 'Microsoft', status: 'Offer', dateApplied: new Date() },
+    { company: 'Quora', status: 'Offer', dateApplied: new Date() },
+    { company: 'Hudson River Trading', status: 'Final Round', dateApplied: new Date() },
     { company: 'Google', status: 'Final Round', dateApplied: new Date() },
+    { company: 'Akuna Capital', status: 'Final Round', dateApplied: new Date() },
     { company: 'Meta', status: 'Interview Scheduled', dateApplied: new Date() },
+    { company: 'Jump Trading', status: 'Interview Scheduled', dateApplied: new Date() },
+    { company: 'Amazon', status: 'Interview Scheduled', dateApplied: new Date() },
     { company: 'Stripe', status: 'Applied', dateApplied: new Date() },
+    { company: 'Palantir', status: 'Applied', dateApplied: new Date() },
     { company: 'NVIDIA', status: 'Applied', dateApplied: new Date() },
     { company: 'Citadel', status: 'Rejected', dateApplied: new Date() },
     { company: 'Netflix', status: 'Rejected', dateApplied: new Date() },
