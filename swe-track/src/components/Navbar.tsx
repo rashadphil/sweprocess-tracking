@@ -2,12 +2,13 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import ToggleTheme from './ToggleTheme'
+import { Link } from 'react-router-dom'
 
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false }
+  { name: 'Dashboard', href: '/dashboard', current: true },
+  { name: 'Team', href: '/team', current: false },
+  { name: 'Projects', href: '/projects', current: false },
+  { name: 'Calendar', href: '/calendar', current: false }
 ]
 
 function classNames(...classes: any) {
@@ -48,9 +49,8 @@ export default function Navbar() {
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4 mt-3">
                     {navigation.map(item => (
-                      <a
-                        key={item.name}
-                        href={item.href}
+                      <Link
+                        to={item.href}
                         className={classNames(
                           item.current
                             ? 'text-gray-900 dark:text-white rounded-none border-b-4 border-red-400'
@@ -60,7 +60,7 @@ export default function Navbar() {
                         aria-current={item.current ? 'page' : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
