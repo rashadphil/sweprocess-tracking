@@ -34,9 +34,9 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className="App bg-gray-50 dark:bg-gray-700">
+      <div className="App transition-colors duration-300 bg-gray-50 dark:bg-gray-700">
         <Navbar />
-        <Dashboard entries={tableEntries}/>
+        <Dashboard entries={tableEntries} />
       </div>
     </ThemeProvider>
   )
