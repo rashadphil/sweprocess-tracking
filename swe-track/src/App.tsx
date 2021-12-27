@@ -2,6 +2,7 @@ import React from 'react'
 import TableEntry from './components/TableEntry'
 import Navbar from './components/Navbar'
 import Dashboard from './pages/Dashboard'
+import { ThemeProvider } from './components/themeContext'
 import './App.css'
 
 function App() {
@@ -32,10 +33,12 @@ function App() {
   ))
 
   return (
-    <div className="App bg-gray-50 dark:bg-gray-700">
-      <Navbar />
-      <Dashboard entries={tableEntries}/>
-    </div>
+    <ThemeProvider>
+      <div className="App bg-gray-50 dark:bg-gray-700">
+        <Navbar />
+        <Dashboard entries={tableEntries}/>
+      </div>
+    </ThemeProvider>
   )
 }
 
