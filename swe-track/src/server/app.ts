@@ -100,6 +100,7 @@ app.post('/api/v1/auth/google', async (req, res) => {
   //for managing the user's session
   session = req.session
   session.user_id = user.uid
+  res.json(user);
 })
 
 app.get('/logout', (req, res) => {
@@ -124,6 +125,10 @@ app.get('/me', async (req, res) => {
   const user = await db.getUserById({ params: { uid: session.user_id } }, res)
   res.status(200)
   res.json(user)
+})
+
+app.post('/me', async (req, res) => {
+  res.json()
 })
 
 app.listen(8080, () => console.log('Server is running!'))
