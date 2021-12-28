@@ -50,7 +50,6 @@ const getUserById = async (request, response) => {
   const uid = parseInt(request.params.uid)
   try {
     const result = await pool.query('SELECT * FROM users WHERE uid = $1', [uid])
-    response.status(201).json(result.rows)
     return result.rows[0]
   } catch (err) {
     return err.stack

@@ -4,17 +4,18 @@ import useSWR from 'swr'
 import axios from 'axios'
 
 const AuthContext = createContext(false)
-const serverUrl = 'http://localhost:8080/'
+const serverUrl = 'http://localhost:8080'
 
 export const AuthProvider = props => {
-  const { data, error, mutate } = useSWR(`/api/v1/auth/me`)
+  const { data, error, mutate } = useSWR(`${serverUrl}/me`)
+  console.log(data);
   return (
     <AuthContext.Provider
       value={{
         user: data,
         error: error,
         handleLogin: () => handleLogin().then(mutate()),
-        logOut: () => logOut().then(mutate()),
+        logOut: () => logOut().then(mutate())
       }}
       {...props}
     />
@@ -24,7 +25,7 @@ export const AuthProvider = props => {
 export const handleLogin = async googleData => {
   console.log('Handling Login')
   const res = await axios.post(
-    serverUrl + 'api/v1/auth/google',
+    serverUrl + '/api/v1/auth/google',
     {
       token: googleData.tokenId
     },
