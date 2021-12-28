@@ -9,31 +9,40 @@ const pool = new Pool({
 
 const getUsers = (request, response) => {
   console.log('getting users')
-  pool.query('SELECT * FROM users ORDER BY uid ASC', (error, results) => {
+  pool.query('SELECT * FROM users ORDER BY uid ASC', (error, result) => {
     if (error) {
       throw error
     }
-    response.status(200).json(results.rows)
+    response.status(200).json(result.rows)
   })
 }
 const upsertUser = (request, response) => {
-  const { email } = request.body
+  console.log('Upserting User')
+  const {
+    username,
+    email,
+    email_verified,
+    membership
+  } = request.body
+
+  const values = [username, email, email_verified || true, membership || 'free']
   //check if the email already exists in the database
-  const userinDB =
-    pool.query(
-      'SELECT * FROM users WHERE email = $1',
-      [email],
-      (error, result) => {
-        if (error) {
-          throw error
-        }
-      }
-    ) !== null
-  if (userinDB) updateUser(request, response)
-  else addUser(request, response)
+  pool.query(
+    `INSERT INTO users(username, email, email_verified, date_created, last_login, membership) 
+    VALUES($1, $2, $3, NOW(), NOW(), $4)
+    ON CONFLICT (email) DO UPDATE SET last_login = NOW()
+    RETURNING *`,
+    values,
+    (error, result) => {
+      if (error) throw error
+      console.log(result)
+      response.status(201).json(result.rows)
+    }
+  )
 }
 
-const addUser = (req, response) => {
+const createUser = (req, res) => {
+  console.log('Creating User')
   const {
     username,
     email,
@@ -56,20 +65,20 @@ const addUser = (req, response) => {
       if (error) {
         throw error
       }
-      response.status(201).send(`User added with ID: ${result.insertId}`)
+      res.status(200).json(result.rows)
     }
   )
 }
-const updateUser = (req, response) => {
-  const { email, last_login } = req.body
+const updateUser = (req, res) => {
+  console.log('Updating User')
+  const { username, email, last_login } = req.body
   pool.query(
-    'UPDATE users SET last_login = $1 WHERE email = $2',
-    [last_login || new Date(), email],
+    'UPDATE users SET last_login = $1, username = $2 WHERE email = $3',
+    [last_login || new Date(), username, email],
     (error, result) => {
       if (error) {
         throw error
       }
-      response.status(201).send(`User added with ID: ${result.insertId}`)
     }
   )
 }
@@ -81,7 +90,6 @@ const getUserById = (request, response) => {
     if (error) {
       throw error
     }
-    response.status(200).json(results.rows)
   })
 }
 

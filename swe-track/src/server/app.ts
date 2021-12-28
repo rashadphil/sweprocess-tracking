@@ -34,8 +34,9 @@ app.post('/api/v1/auth/google', async (req, res) => {
   const name = payload?.name
   const email = payload?.email
   const picture = payload?.picture
+
   const user = {
-    name: payload?.name
+    
   }
 
   res.status(201)
