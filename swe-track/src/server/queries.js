@@ -16,81 +16,45 @@ const getUsers = (request, response) => {
     response.status(200).json(result.rows)
   })
 }
-const upsertUser = (request, response) => {
+const upsertUser = async (request, response) => {
   console.log('Upserting User')
-  const {
+  const { username, email, email_verified, membership, picture, full_name } =
+    request.body
+
+  const values = [
     username,
     email,
-    email_verified,
-    membership
-  } = request.body
-
-  const values = [username, email, email_verified || true, membership || 'free']
-  //check if the email already exists in the database
-  pool.query(
-    `INSERT INTO users(username, email, email_verified, date_created, last_login, membership) 
-    VALUES($1, $2, $3, NOW(), NOW(), $4)
-    ON CONFLICT (email) DO UPDATE SET last_login = NOW()
+    email_verified || true,
+    membership || 'free',
+    picture,
+    full_name
+  ]
+  try {
+    //check if the email already exists in the database
+    const result = await pool.query(
+      `INSERT INTO users(username, email, email_verified, date_created, last_login, membership, picture, full_name) 
+    VALUES($1, $2, $3, NOW(), NOW(), $4, $5, $6)
+    ON CONFLICT (email) DO UPDATE SET last_login = NOW(), picture = $5, full_name = $6
     RETURNING *`,
-    values,
-    (error, result) => {
-      if (error) throw error
-      console.log(result)
-      response.status(201).json(result.rows)
-    }
-  )
+      values
+    )
+    //return the user information to the client
+    return result.rows[0]
+  } catch (err) {
+    return err.stack
+  }
 }
 
-const createUser = (req, res) => {
-  console.log('Creating User')
-  const {
-    username,
-    email,
-    email_verified,
-    date_created,
-    last_login,
-    membership
-  } = req.body
-  pool.query(
-    'INSERT INTO users (username, email, email_verified, date_created, last_login, membership) VALUES ($1, $2, $3, $4, $5, $6)',
-    [
-      username,
-      email,
-      email_verified || 'true',
-      date_created || new Date(),
-      last_login || new Date(),
-      membership || 'free'
-    ],
-    (error, result) => {
-      if (error) {
-        throw error
-      }
-      res.status(200).json(result.rows)
-    }
-  )
-}
-const updateUser = (req, res) => {
-  console.log('Updating User')
-  const { username, email, last_login } = req.body
-  pool.query(
-    'UPDATE users SET last_login = $1, username = $2 WHERE email = $3',
-    [last_login || new Date(), username, email],
-    (error, result) => {
-      if (error) {
-        throw error
-      }
-    }
-  )
-}
-
-const getUserById = (request, response) => {
+const getUserById = async (request, response) => {
+  console.log(request)
   const uid = parseInt(request.params.uid)
-
-  pool.query('SELECT * FROM users WHERE uid = $1', [uid], (error, results) => {
-    if (error) {
-      throw error
-    }
-  })
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE uid = $1', [uid])
+    response.status(201).json(result.rows)
+    return result.rows[0]
+  } catch (err) {
+    return err.stack
+  }
 }
 
 module.exports = {

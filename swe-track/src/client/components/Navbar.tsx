@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import ToggleTheme from './ToggleTheme'
 import { Link } from 'react-router-dom'
+import {useAuth} from './authContext'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', current: true },
@@ -11,11 +12,14 @@ const navigation = [
   { name: 'Calendar', href: '/calendar', current: false }
 ]
 
+
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Navbar() {
+  const auth = useAuth()
+  console.log(auth);
   return (
     <Disclosure as="nav" className="bg-white dark:bg-gray-800 shadow">
       {({ open }: any) => (

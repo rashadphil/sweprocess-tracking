@@ -5,6 +5,8 @@ import Dashboard from './pages/Dashboard'
 import { ThemeProvider } from './components/themeContext'
 import LoginPage from './pages/LoginPage'
 import { Outlet, Link } from 'react-router-dom'
+
+import { AuthProvider } from './components/authContext'
 import './App.css'
 
 function App() {
@@ -36,13 +38,15 @@ function App() {
   ))
 
   return (
-    <ThemeProvider>
-      <div className="App transition-colors duration-300 bg-gray-50 dark:bg-gray-700">
-        <Navbar />
-        {/* <Dashboard entries={tableEntries} /> */}
-      </div>
-      <Outlet/>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <div className="App transition-colors duration-300 bg-gray-50 dark:bg-gray-700">
+          <Navbar />
+          {/* <Dashboard entries={tableEntries} /> */}
+        </div>
+        <Outlet/>
+      </ThemeProvider>
+    </AuthProvider>
   )
 }
 
