@@ -1,4 +1,5 @@
 import { GoogleLogin } from 'react-google-login'
+import axios from 'axios'
 
 export default function GoogleAuth() {
   // const clientId : string = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -15,18 +16,34 @@ export default function GoogleAuth() {
   )
 }
 const serverUrl = 'http://localhost:8080/'
+
 const handleLogin = async googleData => {
-  console.log(googleData);
-  console.log("Handling Login");
-  const res = await fetch(serverUrl + 'api/v1/auth/google', {
-    method: 'POST',
-    body: JSON.stringify({
-      token: googleData.tokenId,
-    }),
-    headers: {
+  console.log('Handling Login')
+  const res = await axios.post(
+    serverUrl + 'api/v1/auth/google',
+    {
+      token: googleData.tokenId
+    },
+    {
       'Content-Type': 'application/json'
     }
-  })
+  )
   const data = await res.json()
+  console.log(data)
   // store returned user somehow
 }
+// const handleLogin = async googleData => {
+//   console.log(googleData);
+//   console.log("Handling Login");
+//   const res = await fetch(serverUrl + 'api/v1/auth/google', {
+//     method: 'POST',
+//     body: JSON.stringify({
+//       token: googleData.tokenId,
+//     }),
+//     headers: {
+//       'Content-Type': 'application/json'
+//     }
+//   })
+//   const data = await res.json()
+//   // store returned user somehow
+// }

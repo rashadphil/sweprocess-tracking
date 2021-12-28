@@ -23,31 +23,32 @@ app.post('/', async (req, res) => {
 })
 
 app.post('/api/v1/auth/google', async (req, res) => {
-  const { token } = req.body
+  const token = req.body.token
+
   const ticket = await client.verifyIdToken({
     idToken: token,
     audience: CLIENT_ID
   })
-  console.log(ticket.getPayload())
+
   const payload = ticket.getPayload()
   const name = payload?.name
   const email = payload?.email
   const picture = payload?.picture
-  // const { name, email, picture } = JSON.parse(ticket.getPayload());
+  const user = {
+    name: payload?.name
+  }
+
   res.status(201)
 })
 
 /**
  * Requests
  */
-app.get('/', (req, res) => {
-  db.test(req, res)
-})
 app.get('/users', (req, res) => {
   db.getUsers(req, res)
 })
 app.post('/users', (req, res) => {
-  db.createUser(req, res)
+  db.upsertUser(req, res)
 })
 app.get('/users/:uid', (req, res) => {
   db.getUserById(req, res)
