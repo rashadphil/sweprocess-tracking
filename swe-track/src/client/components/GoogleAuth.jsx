@@ -22,7 +22,6 @@ const handleLogin = async googleData => {
     method: 'POST',
     body: JSON.stringify({
       token: googleData.tokenId,
-      ok: "BOB IS COOL"
     }),
     headers: {
       'Content-Type': 'application/json'
