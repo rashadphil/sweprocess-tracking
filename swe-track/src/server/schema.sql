@@ -1,7 +1,7 @@
 CREATE TYPE membership_status AS ENUM ('free', 'tier1', 'tier2');
 
 CREATE TABLE users (
-  uid SERIAL PRIMARY KEY,
+  uid SERIAL PRIMARY KEY UNIQUE,
   username VARCHAR(255) UNIQUE,
   email VARCHAR(255) UNIQUE,
   full_name VARCHAR(255),
@@ -23,6 +23,7 @@ CREATE TABLE companies (
 CREATE TYPE application_status AS ENUM ('not open', 'rejected', 'applied', 'online assesement', 'interview rounds', 'final round', 'offer');
 
 CREATE TABLE user_companies (
+  ucid SERIAL PRIMARY KEY,
   user_id INT references users(uid),
   company_id INT references companies(cid),
   user_status application_status,

@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model companies {
+  cid              Int     @id @default(autoincrement())
+  company_name     String? @unique @db.VarChar(255)
+  website_link     String? @db.VarChar(255)
+  application_link String? @db.VarChar(255)
+  intern_salary    Int?
+}
+
+model session {
+  sid    String   @id @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
+}
+
+model users {
+  uid            Int                @id @default(autoincrement())
+  username       String?            @unique @db.VarChar(255)
+  email          String?            @unique @db.VarChar(255)
+  email_verified Boolean?
+  date_created   DateTime?          @db.Date
+  membership     membership_status?
+  last_login     DateTime?          @db.Date
+  picture        String?            @db.VarChar(512)
+  full_name      String?            @db.VarChar(255)
+}
+
+enum application_status {
+  not_open @map("not open")
+  rejected
+  applied
+  online_assesement @map("online assesement")
+  interview_rounds @map("interview rounds")
+  final_round @map("final round")
+  offer
+}
+
+enum membership_status {
+  free
+  tier1
+  tier2
+}

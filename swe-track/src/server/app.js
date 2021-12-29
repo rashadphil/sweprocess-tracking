@@ -5,6 +5,9 @@ const db = require('./queries')
 
 const { OAuth2Client } = require('google-auth-library')
 
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient() 
+
 const clientId =
   '383092057644-fpjevv3amnkr1gkn8g4nlgp57tsjmetq.apps.googleusercontent.com'
 const client = new OAuth2Client(clientId)
