@@ -62,7 +62,7 @@ function App() {
       <div className="App transition-colors duration-300 bg-gray-50 dark:bg-gray-700">
         <Navbar userData = {userData} setUserData = {setUserData}/>
         {userData ? (
-          <Dashboard userData={userData} entries={tableEntries} />
+          <Dashboard userData={userData} />
         ) : (
           <LoginPage userData={userData} setUserData={setUserData}/>
         )}

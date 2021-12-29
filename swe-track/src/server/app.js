@@ -56,8 +56,15 @@ app.get('/companies/name/:name', (req, res) => {
 app.get('/companies/id/:cid', (req, res) => {
   db.getCompanyById(req, res)
 })
+
 app.post('/usercompany', (req, res) => {
   db.upsertUserCompany(req, res)
+})
+app.get('/usercompany', (req, res) => {
+  db.getAllUserCompanies(req, res)
+})
+app.get('/usercompany/id/:uid', (req, res) => {
+  db.getCompaniesByUserId(req, res)
 })
 
 app.listen(8080, () => console.log('Server is running!'))

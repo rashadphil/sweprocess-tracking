@@ -25,8 +25,10 @@ CREATE TABLE companies (
 CREATE TABLE user_companies (
   user_id INT references users(uid) ON UPDATE CASCADE ON DELETE CASCADE,
   company_id INT references companies(cid) ON UPDATE CASCADE,
+  company_name VARCHAR(255) references companies(company_name)
   user_status application_status,
-  CONSTRAINT user_company_id PRIMARY KEY (user_id, company_id)
+  CONSTRAINT user_company_id PRIMARY KEY (user_id, company_id),
+  date_applied DATE
 );
 
 CREATE UNIQUE INDEX "user_companies_user_company_unique" ON "user_companies"("user_id" int4_ops,"company_id" int4_ops);

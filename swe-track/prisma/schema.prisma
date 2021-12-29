@@ -17,11 +17,13 @@ model companies {
 }
 
 model user_companies {
-  user_id     Int
-  company_id  Int
-  user_status application_status?
-  companies   companies           @relation(fields: [company_id], references: [cid], onDelete: NoAction)
-  users       users               @relation(fields: [user_id], references: [uid], onDelete: Cascade)
+  user_id      Int
+  company_id   Int
+  user_status  application_status?
+  date_applied DateTime?           @db.Date
+  company_name String?             @db.VarChar(255)
+  companies    companies           @relation(fields: [company_id], references: [cid], onDelete: NoAction)
+  users        users               @relation(fields: [user_id], references: [uid], onDelete: Cascade)
 
   @@id([user_id, company_id], map: "user_company_id")
   @@unique([user_id, company_id], map: "user_companies_user_company_unique")

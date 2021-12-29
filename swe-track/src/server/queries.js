@@ -61,6 +61,10 @@ const getCompanyById = async (req, res) => {
 
 const upsertUserCompany = async (req, res) => {
   const { user_id, company_id, user_status, date_applied } = req.body
+  const companyInfo = await prisma.companies.findFirst({
+    where: { cid: company_id }
+  })
+  const { company_name } = companyInfo
   const userCompany = await prisma.user_companies.upsert({
     where: {
       user_id_company_id: {
@@ -68,15 +72,32 @@ const upsertUserCompany = async (req, res) => {
         company_id: company_id
       }
     },
-    update: { user_status: user_status || 'applied'},
+    update: { user_status: user_status || 'applied' },
     create: {
       user_id: user_id,
       company_id: company_id,
+      company_name: company_name,
       user_status: user_status || 'applied',
-      date_applied: date_applied
+      date_applied: date_applied || new Date()
     }
   })
   res.status(200).json(userCompany)
+}
+
+const getAllUserCompanies = async (req, res) => {
+  const allUserCompanies = await prisma.user_companies.findMany({})
+  res.status(200).json(allUserCompanies)
+  return allUserCompanies
+}
+
+const getCompaniesByUserId = async (req, res) => {
+  const usersCompanies = await prisma.user_companies.findMany({
+    where: {
+      user_id: parseInt(req.params.uid)
+    }
+  })
+  res.status(200).json(usersCompanies)
+  return usersCompanies
 }
 
 module.exports = {
@@ -86,5 +107,7 @@ module.exports = {
   getCompanies,
   getCompanyByName,
   getCompanyById,
-  upsertUserCompany
+  upsertUserCompany,
+  getAllUserCompanies,
+  getCompaniesByUserId
 }
