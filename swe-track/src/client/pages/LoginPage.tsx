@@ -1,6 +1,6 @@
 import GoogleAuth from '../components/GoogleAuth'
 
-export default function LoginPage() {
+export default function LoginPage({userData, setUserData} : any) {
   return (
     <>
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -20,7 +20,7 @@ export default function LoginPage() {
               </span>
             </p>
           </div>
-            <GoogleAuth />
+            <GoogleAuth userData={userData} setUserData={setUserData}/>
           <div className="">
             <button
               type="submit"
