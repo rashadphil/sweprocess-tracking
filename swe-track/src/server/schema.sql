@@ -1,7 +1,8 @@
 CREATE TYPE membership_status AS ENUM ('free', 'tier1', 'tier2');
+CREATE TYPE application_status AS ENUM ('not open', 'rejected', 'applied', 'online assesement', 'interview rounds', 'final round', 'offer');
 
 CREATE TABLE users (
-  uid SERIAL PRIMARY KEY UNIQUE,
+  uid SERIAL PRIMARY KEY,
   username VARCHAR(255) UNIQUE,
   email VARCHAR(255) UNIQUE,
   full_name VARCHAR(255),
@@ -20,23 +21,12 @@ CREATE TABLE companies (
   intern_salary INT
 );
 
-CREATE TYPE application_status AS ENUM ('not open', 'rejected', 'applied', 'online assesement', 'interview rounds', 'final round', 'offer');
 
 CREATE TABLE user_companies (
-  ucid SERIAL PRIMARY KEY,
-  user_id INT references users(uid),
-  company_id INT references companies(cid),
+  user_id INT references users(uid) ON UPDATE CASCADE ON DELETE CASCADE,
+  company_id INT references companies(cid) ON UPDATE CASCADE,
   user_status application_status,
-  date_applied DATE
+  CONSTRAINT user_company_id PRIMARY KEY (user_id, company_id)
 );
 
-CREATE TABLE "session" (
-  "sid" varchar NOT NULL COLLATE "default",
-  "sess" json NOT NULL,
-  "expire" timestamp(6) NOT NULL
-)
-WITH (OIDS=FALSE);
-
-ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
-
-CREATE INDEX "IDX_session_expire" ON "session" ("expire");
+CREATE UNIQUE INDEX "user_companies_user_company_unique" ON "user_companies"("user_id" int4_ops,"company_id" int4_ops);

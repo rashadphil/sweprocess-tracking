@@ -8,31 +8,36 @@ datasource db {
 }
 
 model companies {
-  cid              Int     @id @default(autoincrement())
-  company_name     String? @unique @db.VarChar(255)
-  website_link     String? @db.VarChar(255)
-  application_link String? @db.VarChar(255)
+  cid              Int              @id @default(autoincrement())
+  company_name     String?          @unique @db.VarChar(255)
+  website_link     String?          @db.VarChar(255)
+  application_link String?          @db.VarChar(255)
   intern_salary    Int?
+  user_companies   user_companies[]
 }
 
-model session {
-  sid    String   @id @db.VarChar
-  sess   Json     @db.Json
-  expire DateTime @db.Timestamp(6)
+model user_companies {
+  user_id     Int
+  company_id  Int
+  user_status application_status?
+  companies   companies           @relation(fields: [company_id], references: [cid], onDelete: NoAction)
+  users       users               @relation(fields: [user_id], references: [uid], onDelete: Cascade)
 
-  @@index([expire], map: "IDX_session_expire")
+  @@id([user_id, company_id], map: "user_company_id")
+  @@unique([user_id, company_id], map: "user_companies_user_company_unique")
 }
 
 model users {
   uid            Int                @id @default(autoincrement())
   username       String?            @unique @db.VarChar(255)
   email          String?            @unique @db.VarChar(255)
+  full_name      String?            @db.VarChar(255)
   email_verified Boolean?
   date_created   DateTime?          @db.Date
-  membership     membership_status?
   last_login     DateTime?          @db.Date
+  membership     membership_status?
   picture        String?            @db.VarChar(512)
-  full_name      String?            @db.VarChar(255)
+  user_companies user_companies[]
 }
 
 enum application_status {

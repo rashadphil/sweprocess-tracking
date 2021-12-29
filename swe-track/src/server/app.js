@@ -6,7 +6,7 @@ const db = require('./queries')
 const { OAuth2Client } = require('google-auth-library')
 
 const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient() 
+const prisma = new PrismaClient()
 
 const clientId =
   '383092057644-fpjevv3amnkr1gkn8g4nlgp57tsjmetq.apps.googleusercontent.com'
@@ -24,18 +24,14 @@ app.post('/api/google-login', async (req, res) => {
     audience: clientId
   })
   const { name, email, picture } = ticket.getPayload()
-  const user = await db.upsertUser(
-    {
-      body: {
-        full_name: name,
-        email: email,
-        picture: picture
-      }
-    },
-    res
-  )
-  res.status(201)
-  res.json(user)
+  const user = await db.upsertUser({
+    body: {
+      full_name: name,
+      email: email,
+      picture: picture
+    }
+  })
+  res.status(200).json(user)
 })
 
 /**
@@ -49,6 +45,19 @@ app.post('/users', (req, res) => {
 })
 app.get('/users/:uid', (req, res) => {
   db.getUserById(req, res)
+})
+
+app.get('/companies', (req, res) => {
+  db.getCompanies(req, res)
+})
+app.get('/companies/name/:name', (req, res) => {
+  db.getCompanyByName(req, res)
+})
+app.get('/companies/id/:cid', (req, res) => {
+  db.getCompanyById(req, res)
+})
+app.post('/usercompany', (req, res) => {
+  db.upsertUserCompany(req, res)
 })
 
 app.listen(8080, () => console.log('Server is running!'))

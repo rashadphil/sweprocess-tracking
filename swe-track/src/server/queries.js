@@ -1,9 +1,9 @@
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-const getUsers = async (request, response) => {
+const getUsers = async (req, res) => {
   const users = await prisma.users.findMany({ orderBy: { uid: 'asc' } })
-  response.status(200).json(users)
+  res.status(200).json(users)
   return users
 }
 
@@ -22,22 +22,69 @@ const upsertUser = async (req, res) => {
       full_name
     }
   })
-  res.status(201).json(user)
   return user
 }
 
-const getUserById = async (request, response) => {
+const getUserById = async (req, res) => {
   const user = await prisma.users.findFirst({
     where: {
-      uid: parseInt(request.params.uid)
+      uid: parseInt(req.params.uid)
     }
   })
-  response.status(200).json(user)
+  res.status(200).json(user)
   return user
+}
+
+const getCompanies = async (req, res) => {
+  const companies = await prisma.companies.findMany({
+    orderBy: { company_name: 'asc' }
+  })
+  res.status(200).json(companies)
+  return companies
+}
+
+const getCompanyByName = async (req, res) => {
+  const company = await prisma.companies.findFirst({
+    where: { company_name: req.params.name }
+  })
+  res.status(200).json(company)
+  return company
+}
+
+const getCompanyById = async (req, res) => {
+  const company = await prisma.companies.findFirst({
+    where: { cid: parseInt(req.params.cid) }
+  })
+  res.status(200).json(company)
+  return company
+}
+
+const upsertUserCompany = async (req, res) => {
+  const { user_id, company_id, user_status, date_applied } = req.body
+  const userCompany = await prisma.user_companies.upsert({
+    where: {
+      user_id_company_id: {
+        user_id: user_id,
+        company_id: company_id
+      }
+    },
+    update: { user_status: user_status || 'applied'},
+    create: {
+      user_id: user_id,
+      company_id: company_id,
+      user_status: user_status || 'applied',
+      date_applied: date_applied
+    }
+  })
+  res.status(200).json(userCompany)
 }
 
 module.exports = {
   getUsers,
   upsertUser,
-  getUserById
+  getUserById,
+  getCompanies,
+  getCompanyByName,
+  getCompanyById,
+  upsertUserCompany
 }
