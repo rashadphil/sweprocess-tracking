@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Table from '../components/Table'
 import TableEntry from '../components/TableEntry'
 import axios from 'axios'
+import AddCompanyModal from '../components/AddCompanyModal'
 
 export default function Dashboard({ userData }: any) {
   const [companies, setCompanies] = useState([])
@@ -9,27 +10,6 @@ export default function Dashboard({ userData }: any) {
   useEffect(() => {
     if (companies.length == 0) getUserCompanies(userData.uid)
   }, [])
-
-  const entries: {
-    company: string
-    status: string
-    dateApplied: Date
-  }[] = [
-    { company: 'Datadog', status: 'Offer', dateApplied: new Date() },
-    {
-      company: 'Hudson River Trading',
-      status: 'Final Round',
-      dateApplied: new Date()
-    },
-    { company: 'Stripe', status: 'Applied', dateApplied: new Date() },
-    { company: 'Palantir', status: 'Applied', dateApplied: new Date() },
-    { company: 'NVIDIA', status: 'Applied', dateApplied: new Date() },
-    { company: 'Citadel', status: 'Rejected', dateApplied: new Date() },
-    { company: 'Netflix', status: 'Rejected', dateApplied: new Date() }
-  ]
-  const tableEntries: JSX.Element[] = entries.map(entry => (
-    <TableEntry {...entry}></TableEntry>
-  ))
 
   const getUserCompanies = async (uid: number) => {
     const response = await axios.get(
@@ -49,7 +29,6 @@ export default function Dashboard({ userData }: any) {
         />
       )
     )
-    console.log(userCompanies)
     setCompanies(userCompanies)
   }
   const capitalize = (s: string) => {
@@ -60,9 +39,12 @@ export default function Dashboard({ userData }: any) {
     <div className="overflow-x-auto mt-20">
       <div className="min-w-screen min-h-screen bg-white-400 flex justify-center font-sans overflow-hidden">
         <div className="w-full lg:w-5/6">
-          <h3 className="text-left ml-3 text-4xl font-[Oceanwide] dark:text-white">
-            Hello {userData.full_name}!
-          </h3>
+          <div className="w-full inline-flex justify-between">
+            <h3 className="text-left ml-3 text-4xl font-[Oceanwide] dark:text-white">
+              Hello {userData.full_name}!
+            </h3>
+            <AddCompanyModal />
+          </div>
           <Table entries={companies}></Table>
         </div>
       </div>

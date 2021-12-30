@@ -35,7 +35,7 @@ app.post('/api/google-login', async (req, res) => {
 })
 
 /**
- * Requests
+ * Users
  */
 app.get('/users', (req, res) => {
   db.getUsers(req, res)
@@ -47,6 +47,9 @@ app.get('/users/:uid', (req, res) => {
   db.getUserById(req, res)
 })
 
+/**
+ * Companies
+ */
 app.get('/companies', (req, res) => {
   db.getCompanies(req, res)
 })
@@ -57,6 +60,9 @@ app.get('/companies/id/:cid', (req, res) => {
   db.getCompanyById(req, res)
 })
 
+/**
+ * User Companies
+ */
 app.post('/usercompany', (req, res) => {
   db.upsertUserCompany(req, res)
 })

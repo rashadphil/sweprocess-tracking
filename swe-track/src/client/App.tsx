@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage'
 import { Outlet, Link } from 'react-router-dom'
 
 import './App.css'
+import AddCompanyModal from './components/AddCompanyModal'
 
 function App() {
   const [userData, setUserData] = useState(
