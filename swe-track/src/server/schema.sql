@@ -1,5 +1,5 @@
 CREATE TYPE membership_status AS ENUM ('free', 'tier1', 'tier2');
-CREATE TYPE application_status AS ENUM ('not open', 'rejected', 'applied', 'online assesement', 'interview rounds', 'final round', 'offer');
+CREATE TYPE application_status AS ENUM ('not open', 'rejected', 'applied', 'online assesment', 'interview rounds', 'final round', 'offer');
 
 CREATE TABLE users (
   uid SERIAL PRIMARY KEY,
@@ -18,7 +18,8 @@ CREATE TABLE companies (
   company_name VARCHAR(255) UNIQUE,
   website_link VARCHAR(255),
   application_link VARCHAR(255),
-  intern_salary INT
+  intern_salary INT,
+  popularity INT
 );
 
 

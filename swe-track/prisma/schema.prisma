@@ -13,6 +13,7 @@ model companies {
   website_link     String?          @db.VarChar(255)
   application_link String?          @db.VarChar(255)
   intern_salary    Int?
+  popularity       Int?
   user_companies   user_companies[]
 }
 
@@ -43,10 +44,10 @@ model users {
 }
 
 enum application_status {
-  not_open @map("not open")
+  not_applied @map("not applied")
   rejected
   applied
-  online_assesement @map("online assesement")
+  online_assesment @map("online assesment")
   interview_rounds @map("interview rounds")
   final_round @map("final round")
   offer

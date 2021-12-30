@@ -2,27 +2,8 @@ import { Popover, Transition, Tab } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import axios from 'axios'
 import { Fragment, useEffect, useState } from 'react'
+import SearchBar from './SearchBar'
 
-const solutions = [
-  {
-    name: 'Insights',
-    description: 'Measure actions your users take',
-    href: '##',
-    icon: IconOne
-  },
-  {
-    name: 'Automations',
-    description: 'Create your own targeted content',
-    href: '##',
-    icon: IconTwo
-  },
-  {
-    name: 'Reports',
-    description: 'Keep track of your growth',
-    href: '##',
-    icon: IconThree
-  }
-]
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')
 }
@@ -31,20 +12,69 @@ const capitalize = (s: string) => {
   return s.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())
 }
 
-export default function AddCompanyModal() {
-  const [currentTab, setCurrentTab] = useState(1)
+const statusColors = {
+  offer: 'green',
+  'final round': 'blue',
+  'interview rounds': 'yellow',
+  'online assesment': 'pink',
+  applied: 'orange',
+  'not applied': 'gray',
+  rejected: 'red'
+}
+
+export default function AddCompanyModal({ userData }: any) {
+  const [currentTab, setCurrentTab] = useState(0)
   const [allCompanyData, setAllCompanyData] = useState<any[]>([])
+  const [displayCompanies, setDisplayCompanies] = useState<any[]>([])
+  const defaultCompanyData = {
+    application_link: null,
+    cid: null,
+    company_name: null,
+    intern_salary: null,
+    popularity: null,
+    website_link: null
+  }
+  const [newEntry, setNewEntry] = useState({
+    companyData: defaultCompanyData,
+    status: '',
+    date: new Date()
+  })
 
   useEffect(() => {
     if (allCompanyData.length == 0) getAllCompanyData()
   }, [])
 
+  useEffect(() => {
+    sendEntryToDb()
+  }, [newEntry])
+
   const getAllCompanyData = async () => {
-    const response = await axios.get('http://localhost:8080/companies')
+    const response = await axios.get(
+      'http://localhost:8080/companies?sort=popularity'
+    )
     const data = response.data
     setAllCompanyData(data)
+    setDisplayCompanies(data)
   }
-  console.log(allCompanyData)
+
+  const sendEntryToDb = async () => {
+    const { companyData, status, date } = newEntry
+    //make sure entry is complete
+    if (!companyData.cid || !status || date === null) return
+    await axios.post('http://localhost:8080/usercompany', {
+      user_id: userData.uid,
+      company_id: companyData.cid,
+      company_name: companyData.company_name,
+      user_status: status.replace(' ', '_'),
+      date_applied: date || new Date()
+    })
+
+    setNewEntry({
+      companyData: defaultCompanyData,
+      status: '',
+      date: new Date()
+    })
+  }
 
   return (
     <div className="w-full max-w-sm px-4 font-[Oceanwide]">
@@ -72,9 +102,13 @@ export default function AddCompanyModal() {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute z-10 w-full max-w-sm bg-white shadow-xl rounded-xl px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl">
+              <Popover.Panel className="absolute z-10 w-full max-w-sm px-4 mt-3 transform -translate-x-1/2 bg-white shadow-xl rounded-xl left-1/2 sm:px-0 lg:max-w-3xl">
                 <div className="w-full max-w-md px-2 py-1 sm:px-0">
-                  <Tab.Group>
+                  <Tab.Group
+                    key={currentTab}
+                    defaultIndex={currentTab}
+                    onChange={index => setCurrentTab(index)}
+                  >
                     <Tab.List className="flex p-1 space-x-1 bg-white-900 rounded-xl">
                       {['Companies', 'Status', 'Date'].map(category => (
                         <Tab
@@ -95,176 +129,83 @@ export default function AddCompanyModal() {
                     <Tab.Panels className="mt-2">
                       <Tab.Panel
                         key={'Company Panel'}
-                        className={classNames(
-                          'bg-white rounded-xl p-3 h-60 overflow-scroll'
-                          // 'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60'
-                        )}
+                        className={classNames('bg-white rounded-xl px-3 ')}
                       >
-                        {allCompanyData.map(company => (
-                          <ul className="flex justify-start">
-                            <li className="text-xl py-1.5 inline-flex pl-3">
-                              <img
-                                className="w-8 h-8 object-scale-down"
-                                src={`//logo.clearbit.com/${company.website_link}`}
-                              />
-                              <h3 className="pl-3 pt-1">
-                                {capitalize(company.company_name)}
-                              </h3>
-                            </li>
-                            {/* {posts.map(post => (
+                        <SearchBar
+                          keys={allCompanyData.map(data => data.company_name)}
+                          values={allCompanyData}
+                          filtered={displayCompanies}
+                          onChange={(filtered: Object[]) =>
+                            setDisplayCompanies(filtered)
+                          }
+                        />
+                        {/* list of companies */}
+                        <div className="overflow-scroll h-72">
+                          {displayCompanies.map(company => (
+                            <ul className="flex justify-start">
                               <li
-                                key={post.id}
-                                className="relative p-3 rounded-md hover:bg-coolGray-100"
+                                className="text-lg py-1.5 inline-flex pl-3 hover:bg-gray-200 hover:cursor-pointer w-full"
+                                onClick={() => {
+                                  setCurrentTab(1)
+                                  setNewEntry({
+                                    ...newEntry,
+                                    companyData: company
+                                  })
+                                }}
                               >
-                                <h3 className="text-sm font-medium leading-5">
-                                  {post.title}
-                                </h3>
-
-                                <ul className="flex mt-1 space-x-1 text-xs font-normal leading-4 text-coolGray-500">
-                                  <li>{post.date}</li>
-                                  <li>&middot;</li>
-                                  <li>{post.commentCount} comments</li>
-                                  <li>&middot;</li>
-                                  <li>{post.shareCount} shares</li>
-                                </ul>
-
-                                <a
-                                  href="#"
-                                  className={classNames(
-                                    'absolute inset-0 rounded-md',
-                                    'focus:z-10 focus:outline-none focus:ring-2 ring-blue-400'
-                                  )}
+                                <img
+                                  className="object-scale-down w-8 h-8"
+                                  src={`//logo.clearbit.com/${company.website_link}`}
                                 />
+                                <h3 className="pt-1 pl-3">
+                                  {capitalize(company.company_name)}
+                                </h3>
                               </li>
-                            ))} */}
-                          </ul>
-                        ))}
+                            </ul>
+                          ))}
+                        </div>
+                      </Tab.Panel>
+
+                      <Tab.Panel
+                        key={'Status Panel'}
+                        className={classNames('bg-white  rounded-xl px-3 ')}
+                      >
+                        <div className="overflow-scroll h-72">
+                          {Object.entries(statusColors).map(
+                            ([status, color]) => (
+                              <ul className="flex justify-start">
+                                <li
+                                  className="py-1.5 inline-flex pl-3 hover:bg-gray-300 hover:cursor-pointer w-full"
+                                  onClick={() => {
+                                    setCurrentTab(2)
+                                    setNewEntry({
+                                      ...newEntry,
+                                      status: status
+                                    })
+                                  }}
+                                >
+                                  <span
+                                    className={classNames(
+                                      `bg-${color}-200 text-${color}-600`,
+                                      'font-bold py-1 px-3 rounded-full text-md'
+                                    )}
+                                  >
+                                    {capitalize(status)}
+                                  </span>
+                                </li>
+                              </ul>
+                            )
+                          )}
+                        </div>
                       </Tab.Panel>
                     </Tab.Panels>
                   </Tab.Group>
                 </div>
-                {/* <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                  <div className="relative grid gap-8 bg-white p-7 lg:grid-cols-2">
-                    {solutions.map(item => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                      >
-                        <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 text-white sm:h-12 sm:w-12">
-                          <item.icon aria-hidden="true" />
-                        </div>
-                        <div className="ml-4">
-                          <p className="text-sm font-medium text-gray-900">
-                            {item.name}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            {item.description}
-                          </p>
-                        </div>
-                      </a>
-                    ))}
-                  </div>
-                  <div className="p-4 bg-gray-50">
-                    <a
-                      href="##"
-                      className="flow-root px-2 py-2 transition duration-150 ease-in-out rounded-md hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                    >
-                      <span className="flex items-center">
-                        <span className="text-sm font-medium text-gray-900">
-                          Documentation
-                        </span>
-                      </span>
-                      <span className="block text-sm text-gray-500">
-                        Start integrating products and tools
-                      </span>
-                    </a>
-                  </div>
-                </div> */}
               </Popover.Panel>
             </Transition>
           </>
         )}
       </Popover>
     </div>
-  )
-}
-
-function IconOne() {
-  return (
-    <svg
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect width="48" height="48" rx="8" fill="#FFEDD5" />
-      <path
-        d="M24 11L35.2583 17.5V30.5L24 37L12.7417 30.5V17.5L24 11Z"
-        stroke="#FB923C"
-        strokeWidth="2"
-      />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M16.7417 19.8094V28.1906L24 32.3812L31.2584 28.1906V19.8094L24 15.6188L16.7417 19.8094Z"
-        stroke="#FDBA74"
-        strokeWidth="2"
-      />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M20.7417 22.1196V25.882L24 27.7632L27.2584 25.882V22.1196L24 20.2384L20.7417 22.1196Z"
-        stroke="#FDBA74"
-        strokeWidth="2"
-      />
-    </svg>
-  )
-}
-
-function IconTwo() {
-  return (
-    <svg
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect width="48" height="48" rx="8" fill="#FFEDD5" />
-      <path
-        d="M28.0413 20L23.9998 13L19.9585 20M32.0828 27.0001L36.1242 34H28.0415M19.9585 34H11.8755L15.9171 27"
-        stroke="#FB923C"
-        strokeWidth="2"
-      />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M18.804 30H29.1963L24.0001 21L18.804 30Z"
-        stroke="#FDBA74"
-        strokeWidth="2"
-      />
-    </svg>
-  )
-}
-
-function IconThree() {
-  return (
-    <svg
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect width="48" height="48" rx="8" fill="#FFEDD5" />
-      <rect x="13" y="32" width="2" height="4" fill="#FDBA74" />
-      <rect x="17" y="28" width="2" height="8" fill="#FDBA74" />
-      <rect x="21" y="24" width="2" height="12" fill="#FDBA74" />
-      <rect x="25" y="20" width="2" height="16" fill="#FDBA74" />
-      <rect x="29" y="16" width="2" height="20" fill="#FB923C" />
-      <rect x="33" y="12" width="2" height="24" fill="#FB923C" />
-    </svg>
   )
 }

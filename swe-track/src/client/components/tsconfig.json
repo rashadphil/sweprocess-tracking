@@ -16,7 +16,7 @@
     "moduleResolution": "node",
     "types": ["node"],
     "incremental": true,
-    "composite": true
+    "composite": true,
   },
   "include": ["**/*.ts", "authContext.js"],
   "exclude": ["**/*.test.ts"]

@@ -72,5 +72,8 @@ app.get('/usercompany', (req, res) => {
 app.get('/usercompany/id/:uid', (req, res) => {
   db.getCompaniesByUserId(req, res)
 })
+app.delete('/usercompany/:uid/:cid', (req, res) => {
+  db.deleteUserCompany(req, res)
+})
 
 app.listen(8080, () => console.log('Server is running!'))

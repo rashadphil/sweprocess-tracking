@@ -8,7 +8,7 @@ export default function Dashboard({ userData }: any) {
   const [companies, setCompanies] = useState([])
 
   useEffect(() => {
-    if (companies.length == 0) getUserCompanies(userData.uid)
+    if (companies.length === 0) getUserCompanies(userData.uid)
   }, [])
 
   const getUserCompanies = async (uid: number) => {
@@ -32,18 +32,20 @@ export default function Dashboard({ userData }: any) {
     setCompanies(userCompanies)
   }
   const capitalize = (s: string) => {
-    return s.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())
+    return s
+      .replace('_', ' ')
+      .replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())
   }
 
   return (
-    <div className="overflow-x-auto mt-20">
-      <div className="min-w-screen min-h-screen bg-white-400 flex justify-center font-sans overflow-hidden">
+    <div className="mt-20 overflow-x-auto">
+      <div className="flex justify-center min-h-screen overflow-hidden font-sans min-w-screen bg-white-400">
         <div className="w-full lg:w-5/6">
-          <div className="w-full inline-flex justify-between">
+          <div className="inline-flex justify-between w-full">
             <h3 className="text-left ml-3 text-4xl font-[Oceanwide] dark:text-white">
               Hello {userData.full_name}!
             </h3>
-            <AddCompanyModal />
+            <AddCompanyModal userData={userData} />
           </div>
           <Table entries={companies}></Table>
         </div>

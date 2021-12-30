@@ -36,8 +36,14 @@ const getUserById = async (req, res) => {
 }
 
 const getCompanies = async (req, res) => {
+  const sort = req.query.sort
+  const orderBy =
+    sort === 'popularity'
+      ? [{ popularity: 'desc' }, { company_name: 'asc' }]
+      : { company_name: 'asc' }
+
   const companies = await prisma.companies.findMany({
-    orderBy: { company_name: 'asc' }
+    orderBy: orderBy
   })
   res.status(200).json(companies)
   return companies
@@ -81,6 +87,7 @@ const upsertUserCompany = async (req, res) => {
       date_applied: date_applied || new Date()
     }
   })
+  await updatePopularity(company_id, 1)
   res.status(200).json(userCompany)
 }
 
@@ -94,10 +101,38 @@ const getCompaniesByUserId = async (req, res) => {
   const usersCompanies = await prisma.user_companies.findMany({
     where: {
       user_id: parseInt(req.params.uid)
-    }
+    },
+    orderBy: { user_status: 'desc' }
   })
   res.status(200).json(usersCompanies)
   return usersCompanies
+}
+
+const deleteUserCompany = async (req, res) => {
+  const uid = parseInt(req.params.uid)
+  const cid = parseInt(req.params.cid)
+  const usersCompanies = await prisma.user_companies.delete({
+    where: {
+      user_id_company_id: {
+        user_id: uid,
+        company_id: cid
+      }
+    }
+  })
+  await updatePopularity(cid, -1)
+  res.status(200).json(usersCompanies)
+  return usersCompanies
+}
+
+const updatePopularity = async (cid, amount) => {
+  await prisma.companies.update({
+    where: { cid: cid },
+    data: {
+      popularity: {
+        increment: amount
+      }
+    }
+  })
 }
 
 module.exports = {
@@ -109,5 +144,6 @@ module.exports = {
   getCompanyById,
   upsertUserCompany,
   getAllUserCompanies,
-  getCompaniesByUserId
+  getCompaniesByUserId,
+  deleteUserCompany
 }
