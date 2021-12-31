@@ -87,8 +87,16 @@ const upsertUserCompany = async (req, res) => {
       date_applied: date_applied || new Date()
     }
   })
+  await updateUser(user_id)
   await updatePopularity(company_id, 1)
   res.status(200).json(userCompany)
+}
+
+const updateUser = async uid => {
+  await prisma.users.update({
+    where: { uid: uid },
+    data: { last_update: new Date() }
+  })
 }
 
 const getAllUserCompanies = async (req, res) => {

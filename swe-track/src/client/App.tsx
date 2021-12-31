@@ -20,7 +20,7 @@ function App() {
       <div className="transition-colors duration-300 App bg-gray-50 dark:bg-gray-700">
         <Navbar userData={userData} setUserData={setUserData} />
         {userData ? (
-          <Dashboard userData={userData} />
+          <Dashboard userData={userData} setUserData={setUserData} />
         ) : (
           <LoginPage userData={userData} setUserData={setUserData} />
         )}

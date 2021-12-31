@@ -14,6 +14,7 @@ export default function GoogleAuth({ userData, setUserData }) {
     })
     const data = res.data
     setUserData(data)
+    console.log(JSON.stringify(data))
     localStorage.setItem('userData', JSON.stringify(data))
   }
   return (

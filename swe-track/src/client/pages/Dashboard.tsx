@@ -4,12 +4,12 @@ import TableEntry from '../components/TableEntry'
 import axios from 'axios'
 import AddCompanyModal from '../components/AddCompanyModal'
 
-export default function Dashboard({ userData }: any) {
+export default function Dashboard({ userData, setUserData }: any) {
   const [companies, setCompanies] = useState([])
 
   useEffect(() => {
-    if (companies.length === 0) getUserCompanies(userData.uid)
-  }, [])
+    getUserCompanies(userData.uid)
+  }, [userData]) //if last update changes refetch
 
   const getUserCompanies = async (uid: number) => {
     const response = await axios.get(
@@ -29,6 +29,7 @@ export default function Dashboard({ userData }: any) {
         />
       )
     )
+    // console.log(ok.getTime() == userData.last_update.getTime())
     setCompanies(userCompanies)
   }
   const capitalize = (s: string) => {
@@ -45,7 +46,7 @@ export default function Dashboard({ userData }: any) {
             <h3 className="text-left ml-3 text-4xl font-[Oceanwide] dark:text-white">
               Hello {userData.full_name}!
             </h3>
-            <AddCompanyModal userData={userData} />
+            <AddCompanyModal userData={userData} setUserData={setUserData} />
           </div>
           <Table entries={companies}></Table>
         </div>

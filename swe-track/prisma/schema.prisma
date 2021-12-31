@@ -40,6 +40,7 @@ model users {
   last_login     DateTime?          @db.Date
   membership     membership_status?
   picture        String?            @db.VarChar(512)
+  last_update    DateTime?          @db.Timestamp(6)
   user_companies user_companies[]
 }
 

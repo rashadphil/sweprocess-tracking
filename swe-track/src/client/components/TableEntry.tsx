@@ -44,7 +44,7 @@ export default function TableEntry({
       <td className="px-6 py-3 text-center">
         <span
           className={classNames(
-            `${bgColor} ${textColor} font-bold py-1 px-3 rounded-full text-xs`
+            `${bgColor} ${textColor} font-bold py-1 px-2 rounded-md text-sm`
           )}
         >
           {status}
@@ -69,6 +69,11 @@ export default function TableEntry({
             {' '}
             3{' '}
           </span>
+          <span
+            className={classNames(
+              'text-gray-600 text-red-600 text-orange-600 text-yellow-600 text-green-600 text-blue-600 text-pink-600 text-gray-600, bg-red-200 bg-orange-200 bg-yellow-200 bg-green-200 bg-blue-200 bg-pink-200 bg-gray-200'
+            )}
+          />
         </div>
       </td>
     </tr>

@@ -22,7 +22,7 @@ const statusColors = {
   rejected: 'red'
 }
 
-export default function AddCompanyModal({ userData }: any) {
+export default function AddCompanyModal({ userData, setUserData }: any) {
   const [currentTab, setCurrentTab] = useState(0)
   const [allCompanyData, setAllCompanyData] = useState<any[]>([])
   const [displayCompanies, setDisplayCompanies] = useState<any[]>([])
@@ -39,6 +39,9 @@ export default function AddCompanyModal({ userData }: any) {
     status: '',
     date: new Date()
   })
+  useEffect(() => {
+    console.log(userData)
+  }, [userData])
 
   useEffect(() => {
     if (allCompanyData.length == 0) getAllCompanyData()
@@ -74,6 +77,9 @@ export default function AddCompanyModal({ userData }: any) {
       status: '',
       date: new Date()
     })
+    setUserData(
+      (await axios.get(`http://localhost:8080/users/${userData.uid}`)).data
+    )
   }
 
   return (
@@ -144,7 +150,7 @@ export default function AddCompanyModal({ userData }: any) {
                           {displayCompanies.map(company => (
                             <ul className="flex justify-start">
                               <li
-                                className="text-lg py-1.5 inline-flex pl-3 hover:bg-gray-200 hover:cursor-pointer w-full"
+                                className="text-md py-1.5 inline-flex pl-3 hover:bg-gray-200 hover:cursor-pointer w-full"
                                 onClick={() => {
                                   setCurrentTab(1)
                                   setNewEntry({
@@ -187,7 +193,7 @@ export default function AddCompanyModal({ userData }: any) {
                                   <span
                                     className={classNames(
                                       `bg-${color}-200 text-${color}-600`,
-                                      'font-bold py-1 px-3 rounded-full text-md'
+                                      'font-bold py-1 px-2 rounded-md text-sm'
                                     )}
                                   >
                                     {capitalize(status)}
