@@ -1,6 +1,7 @@
+import React from 'react'
 import { TrashIcon } from '@heroicons/react/outline'
 import axios from 'axios'
-import React from 'react'
+import dateformat from 'dateformat'
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')
@@ -39,12 +40,10 @@ export default function TableEntry({
 
   const deleteEntry = async (uid: number, cid: number) => {
     await axios.delete(`http://localhost:8080/usercompany/${uid}/${cid}`)
-    setUserData(
-      (await axios.get(`http://localhost:8080/users/${uid}`)).data
-    )
+    setUserData((await axios.get(`http://localhost:8080/users/${uid}`)).data)
   }
   return (
-    <tr className="text-black border-b border-gray-200 dark:border-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white">
+    <tr className="text-black border-b border-gray-200 group dark:border-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white">
       <td className="px-6 py-3 text-left whitespace-nowrap ">
         <div className="flex items-center">
           <div className="mr-2">
@@ -69,7 +68,7 @@ export default function TableEntry({
       </td>
       <td className="px-6 py-3 text-left">
         <div className="flex items-center">
-          <span>August 11, 2021</span>
+          <span>{dateformat(date_applied, 'd mmm yyyy')}</span>
         </div>
       </td>
       <td className="px-6 py-3 text-center">
@@ -93,10 +92,10 @@ export default function TableEntry({
           />
         </div>
       </td>
-      <td className="px-6 py-3 text-center">
+      <td className="px-1 py-3 text-center ">
         <div className="flex items-center justify-center">
           <TrashIcon
-            className="w-5 h-5 ml-2 text-red-300 hover:text-red-600 hover:cursor-pointer "
+            className="invisible w-5 h-5 ml-2 text-red-300 group-hover:visible hover:text-red-600 hover:cursor-pointer "
             aria-hidden="true"
             onClick={() => deleteEntry(user_id, company_id)}
           />
