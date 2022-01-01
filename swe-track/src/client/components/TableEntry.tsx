@@ -1,14 +1,11 @@
+import { TrashIcon } from '@heroicons/react/outline'
+import axios from 'axios'
 import React from 'react'
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-type EntryProps = {
-  company: string
-  status: string
-  dateApplied: Date
-}
 const statusColors = new Map<string, string>([
   ['Offer', 'green'],
   ['Final Round', 'blue'],
@@ -32,12 +29,20 @@ export default function TableEntry({
     company_name,
     user_status,
     date_applied
-  }
+  },
+  setUserData
 }: any) {
   company_name = capitalize(company_name)
   user_status = capitalize(user_status)
   const bgColor: string = `bg-${statusColors.get(user_status)}-200`
   const textColor: string = `text-${statusColors.get(user_status)}-600`
+
+  const deleteEntry = async (uid: number, cid: number) => {
+    await axios.delete(`http://localhost:8080/usercompany/${uid}/${cid}`)
+    setUserData(
+      (await axios.get(`http://localhost:8080/users/${uid}`)).data
+    )
+  }
   return (
     <tr className="text-black border-b border-gray-200 dark:border-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white">
       <td className="px-6 py-3 text-left whitespace-nowrap ">
@@ -85,6 +90,15 @@ export default function TableEntry({
             className={classNames(
               'text-gray-600 text-red-600 text-orange-600 text-yellow-600 text-green-600 text-blue-600 text-pink-600 text-gray-600, bg-red-200 bg-orange-200 bg-yellow-200 bg-green-200 bg-blue-200 bg-pink-200 bg-gray-200'
             )}
+          />
+        </div>
+      </td>
+      <td className="px-6 py-3 text-center">
+        <div className="flex items-center justify-center">
+          <TrashIcon
+            className="w-5 h-5 ml-2 text-red-300 hover:text-red-600 hover:cursor-pointer "
+            aria-hidden="true"
+            onClick={() => deleteEntry(user_id, company_id)}
           />
         </div>
       </td>

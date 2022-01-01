@@ -22,7 +22,7 @@ export default function Dashboard({ userData, setUserData }: any) {
         company_name: string
         user_status: string
         date_applied: Date
-      }) => <TableEntry userCompanyData={entry} />
+      }) => <TableEntry userCompanyData={entry} setUserData={setUserData} />
     )
     // console.log(ok.getTime() == userData.last_update.getTime())
     setCompanies(userCompanies)

@@ -1,17 +1,17 @@
 export default function Table({ entries }: any) {
   return (
-    <div className="bg-white dark:bg-gray-700 shadow-md rounded my-6">
-      <table className="min-w-max w-full table-auto">
+    <div className="my-6 bg-white rounded shadow-md dark:bg-gray-700">
+      <table className="w-full table-auto min-w-max">
         <thead>
-          <tr className="bg-white dark:bg-gray-800 border-black border-b text-black dark:text-white uppercase text-sm leading-normal">
-            <th className="py-3 px-6 text-left">Company</th>
-            <th className="py-3 px-6 text-center">Status</th>
-            <th className="py-3 px-6 text-left">Date Applied</th>
-            <th className="py-3 px-6 text-center">LC Problems</th>
+          <tr className="text-sm leading-normal text-black uppercase bg-white border-b border-black dark:bg-gray-800 dark:text-white">
+            <th className="px-6 py-3 text-left">Company</th>
+            <th className="px-6 py-3 text-center">Status</th>
+            <th className="px-6 py-3 text-left">Date Applied</th>
+            <th className="px-6 py-3 text-center">LC Problems</th>
           </tr>
           {entries}
         </thead>
-        <tbody className="text-gray-600 dark:text-white text-sm font-light"></tbody>
+        <tbody className="text-sm font-light text-gray-600 dark:text-white"></tbody>
       </table>
     </div>
   )
