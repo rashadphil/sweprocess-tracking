@@ -16,18 +16,13 @@ export default function Dashboard({ userData, setUserData }: any) {
       `http://localhost:8080/usercompany/id/${uid}`
     )
     const data = response.data
+    console.log(data)
     const userCompanies = data.map(
       (entry: {
         company_name: string
         user_status: string
         date_applied: Date
-      }) => (
-        <TableEntry
-          company={capitalize(entry.company_name)}
-          status={capitalize(entry.user_status)}
-          dateApplied={entry.date_applied}
-        />
-      )
+      }) => <TableEntry userCompanyData={entry} />
     )
     // console.log(ok.getTime() == userData.last_update.getTime())
     setCompanies(userCompanies)

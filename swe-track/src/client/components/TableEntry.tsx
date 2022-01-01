@@ -19,13 +19,25 @@ const statusColors = new Map<string, string>([
   ['Rejected', 'red']
 ])
 
+const capitalize = (s: string) => {
+  return s
+    .replace('_', ' ')
+    .replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())
+}
+
 export default function TableEntry({
-  company,
-  status,
-  dateApplied
-}: EntryProps) {
-  const bgColor: string = `bg-${statusColors.get(status)}-200`
-  const textColor: string = `text-${statusColors.get(status)}-600`
+  userCompanyData: {
+    company_id,
+    user_id,
+    company_name,
+    user_status,
+    date_applied
+  }
+}: any) {
+  company_name = capitalize(company_name)
+  user_status = capitalize(user_status)
+  const bgColor: string = `bg-${statusColors.get(user_status)}-200`
+  const textColor: string = `text-${statusColors.get(user_status)}-600`
   return (
     <tr className="text-black border-b border-gray-200 dark:border-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white">
       <td className="px-6 py-3 text-left whitespace-nowrap ">
@@ -33,12 +45,12 @@ export default function TableEntry({
           <div className="mr-2">
             <img
               className="object-scale-down w-8 h-8"
-              src={`//logo.clearbit.com/${company
+              src={`//logo.clearbit.com/${company_name
                 .replace(/\s+/g, '')
                 .toLowerCase()}.com`}
             ></img>
           </div>
-          <span className="font-medium">{company}</span>
+          <span className="font-medium">{company_name}</span>
         </div>
       </td>
       <td className="px-6 py-3 text-center">
@@ -47,7 +59,7 @@ export default function TableEntry({
             `${bgColor} ${textColor} font-bold py-1 px-2 rounded-md text-sm`
           )}
         >
-          {status}
+          {capitalize(user_status)}
         </span>
       </td>
       <td className="px-6 py-3 text-left">
