@@ -106,9 +106,21 @@ const getAllUserCompanies = async (req, res) => {
 }
 
 const getCompaniesByUserId = async (req, res) => {
+  const query = req.query
+  const statusParams =
+    query.status instanceof Array ? query.status : [query.status]
+  console.log(statusParams)
+  const statusFilter = statusParams.map(status => {
+    return {
+      user_status: {
+        equals: status
+      }
+    }
+  })
   const usersCompanies = await prisma.user_companies.findMany({
     where: {
-      user_id: parseInt(req.params.uid)
+      user_id: parseInt(req.params.uid),
+      OR: statusParams[0] ? statusFilter : undefined
     },
     orderBy: { user_status: 'desc' }
   })
