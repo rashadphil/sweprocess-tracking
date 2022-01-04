@@ -3,6 +3,7 @@ import { ChevronDownIcon } from '@heroicons/react/solid'
 import axios from 'axios'
 import { Fragment, useEffect, useState } from 'react'
 import SearchBar from './SearchBar'
+import DatePick from './DatePick'
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')
@@ -108,7 +109,8 @@ export default function AddCompanyModal({ userData, setUserData }: any) {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute z-10 w-full max-w-sm px-4 mt-3 transform -translate-x-1/2 bg-white shadow-xl rounded-xl left-1/2 sm:px-0 lg:max-w-3xl">
+              {/* <Popover.Panel className="absolute z-10 w-full max-w-sm px-4 mt-3 transform -translate-x-1/2 bg-white shadow-xl rounded-xl left-1/2 sm:px-0 lg:max-w-3xl"> */}
+              <Popover.Panel className="absolute z-10 w-72 px-4 mt-3 sm:px-0 lg:max-w-3xl left-1/2  transform -translate-x-1/2 bg-white shadow-xl rounded-xl">
                 <div className="w-full max-w-md px-2 py-1 sm:px-0">
                   <Tab.Group
                     key={currentTab}
@@ -202,6 +204,15 @@ export default function AddCompanyModal({ userData, setUserData }: any) {
                               </ul>
                             )
                           )}
+                        </div>
+                      </Tab.Panel>
+
+                      <Tab.Panel
+                        key={'Date Panel'}
+                        className={classNames('bg-white  rounded-xl px-3 ')}
+                      >
+                        <div className="overflow-scroll h-72">
+                          <DatePick></DatePick>
                         </div>
                       </Tab.Panel>
                     </Tab.Panels>

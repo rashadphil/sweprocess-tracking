@@ -33,3 +33,6 @@ CREATE TABLE user_companies (
 );
 
 CREATE UNIQUE INDEX "user_companies_user_company_unique" ON "user_companies"("user_id" int4_ops,"company_id" int4_ops);
+
+-- Update Popularity counts of companies
+UPDATE companies SET popularity = (SELECT COUNT(*) FROM user_companies WHERE user_companies.company_id = companies.cid);

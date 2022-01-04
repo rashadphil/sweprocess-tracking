@@ -1,4 +1,4 @@
-export default function Table({ entries }: any) {
+export default function Table({ entries}: any) {
   return (
     <div className="my-6 bg-white rounded shadow-md dark:bg-gray-700">
       <table className="w-full table-auto min-w-max">

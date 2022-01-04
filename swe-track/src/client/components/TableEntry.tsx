@@ -2,6 +2,7 @@ import React from 'react'
 import { TrashIcon } from '@heroicons/react/outline'
 import axios from 'axios'
 import dateformat from 'dateformat'
+import UserStatusPopup from './UserStatusPopup'
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')
@@ -42,6 +43,21 @@ export default function TableEntry({
     await axios.delete(`http://localhost:8080/usercompany/${uid}/${cid}`)
     setUserData((await axios.get(`http://localhost:8080/users/${uid}`)).data)
   }
+  const modifyEntry = async (change: string | Date) => {
+    const data = {
+      company_id: company_id,
+      user_id: user_id,
+      user_status: user_status,
+      date_applied: date_applied
+    }
+    typeof change === 'string'
+      ? (data.user_status = change)
+      : (data.date_applied = change)
+    await axios.post('http://localhost:8080/usercompany', data)
+    setUserData(
+      (await axios.get(`http://localhost:8080/users/${user_id}`)).data
+    )
+  }
   return (
     <tr className="text-black border-b border-gray-200 group dark:border-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white">
       <td className="px-6 py-3 text-left whitespace-nowrap ">
@@ -58,13 +74,12 @@ export default function TableEntry({
         </div>
       </td>
       <td className="px-6 py-3 text-center">
-        <span
-          className={classNames(
-            `${bgColor} ${textColor} font-bold py-1 px-2 rounded-md text-sm`
-          )}
-        >
-          {capitalize(user_status)}
-        </span>
+        <div>
+          <UserStatusPopup
+            user_status={user_status}
+            modifyEntry={modifyEntry}
+          />
+        </div>
       </td>
       <td className="px-6 py-3 text-left">
         <div className="flex items-center">
