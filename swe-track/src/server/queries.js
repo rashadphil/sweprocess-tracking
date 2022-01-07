@@ -109,7 +109,6 @@ const getCompaniesByUserId = async (req, res) => {
   const query = req.query
   const statusParams =
     query.status instanceof Array ? query.status : [query.status]
-  console.log(statusParams)
   const statusFilter = statusParams.map(status => {
     return {
       user_status: {
@@ -155,6 +154,128 @@ const updatePopularity = async (cid, amount) => {
   })
 }
 
+/**
+ * Leetcode
+ */
+const getAllLeetcode = async (req, res) => {
+  const problems = await prisma.leetcode.findMany({})
+  res.status(200).json(problems)
+  return problems
+}
+
+const getProblemsFromTag = async (req, res) => {
+  const tid = parseInt(req.params.tid)
+  const problems = await prisma.leetcode_tags.findMany({
+    where: { tid: tid },
+    select: { leetcode: true }
+  })
+
+  res.status(200).json(problems)
+  return problems
+}
+
+const upsertUserLeetcode = async (req, res) => {
+  const { uid, lid, date_solved } = req.body
+  const userLeetcode = await prisma.user_leetcode.upsert({
+    where: {
+      uid_lid: {
+        uid: uid,
+        lid: lid
+      }
+    },
+    update: { date_solved: date_solved || new Date() },
+    create: {
+      uid: uid,
+      lid: lid,
+      date_solved: date_solved || new Date()
+    }
+  })
+  await updateUser(uid)
+  res.status(200).json(userLeetcode)
+}
+// const query = req.query
+// const statusParams =
+//   query.status instanceof Array ? query.status : [query.status]
+// const statusFilter = statusParams.map(status => {
+//   return {
+//     user_status: {
+//       equals: status
+//     }
+//   }
+// })
+// const usersCompanies = await prisma.user_companies.findMany({
+//   where: {
+//     user_id: parseInt(req.params.uid),
+//     OR: statusParams[0] ? statusFilter : undefined
+//   },
+//   orderBy: { user_status: 'desc' }
+// })
+// res.status(200).json(usersCompanies)
+// return usersCompanies
+// select: {
+//   title: true,
+//   difficulty: true,
+//   leetcode_tags: {
+//     select: {
+//       tag: {
+//         select: { tag_name: true, color: true, alias: true }
+//       }
+//     }
+//   }
+// }
+
+const getLeetcodeByUserId = async (req, res) => {
+  const query = req.query
+  const difficultyParams =
+    query.difficulty instanceof Array ? query.difficulty : [query.difficulty]
+  const difficultyFilter = difficultyParams.map(difficulty => {
+    return {
+      leetcode: {
+        is: { difficulty: { equals: difficulty, mode: 'insensitive' } }
+      }
+    }
+  })
+  const userLeetcode = await prisma.user_leetcode.findMany({
+    where: {
+      AND: [{ uid: parseInt(req.params.uid) }],
+      OR: difficultyParams[0] ? difficultyFilter : undefined
+    },
+    include: {
+      leetcode: {
+        select: {
+          title: true,
+          difficulty: true,
+          leetcode_tags: {
+            select: {
+              tag: {
+                select: { tag_name: true, color: true, alias: true }
+              }
+            }
+          }
+        }
+      }
+    }
+  })
+
+  res.status(200).json(userLeetcode)
+  return userLeetcode
+}
+
+const deleteUserLeetcode = async (req, res) => {
+  const uid = parseInt(req.params.uid)
+  const lid = parseInt(req.params.lid)
+  const userLeetcode = await prisma.user_leetcode.delete({
+    where: {
+      uid_lid: {
+        uid: uid,
+        lid: lid
+      }
+    }
+  })
+  res.status(200).json(userLeetcode)
+  return userLeetcode
+}
+
 module.exports = {
   getUsers,
   upsertUser,
@@ -165,5 +286,10 @@ module.exports = {
   upsertUserCompany,
   getAllUserCompanies,
   getCompaniesByUserId,
-  deleteUserCompany
+  deleteUserCompany,
+  getAllLeetcode,
+  getProblemsFromTag,
+  upsertUserLeetcode,
+  getLeetcodeByUserId,
+  deleteUserLeetcode
 }

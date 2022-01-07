@@ -36,3 +36,29 @@ CREATE UNIQUE INDEX "user_companies_user_company_unique" ON "user_companies"("us
 
 -- Update Popularity counts of companies
 UPDATE companies SET popularity = (SELECT COUNT(*) FROM user_companies WHERE user_companies.company_id = companies.cid);
+
+CREATE TABLE leetcode (
+  lid SERIAL PRIMARY KEY,
+  title VARCHAR(255),
+  difficulty VARCHAR(255)
+);
+
+CREATE TABLE tag (
+  tid SERIAL PRIMARY KEY,
+  tag_name VARCHAR(255) UNIQUE
+  color CHAR(6)
+  alias VARCHAR(255)
+);
+
+CREATE TABLE leetcode_tags (
+  lid INT references leetcode(lid) ON UPDATE CASCADE ON DELETE CASCADE,
+  tid INT references tag(tid) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT leetcode_tags_id PRIMARY KEY (lid, tid)
+);
+
+CREATE TABLE users_leetcode (
+  uid INT references users(uid) ON UPDATE CASCADE ON DELETE CASCADE,
+  lid INT references leetcode(lid) ON UPDATE CASCADE ON DELETE CASCADE,
+  date_solved DATE
+  CONSTRAINT users_leetcode_id PRIMARY KEY (uid, lid)
+);

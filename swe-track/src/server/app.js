@@ -76,4 +76,24 @@ app.delete('/usercompany/:uid/:cid', (req, res) => {
   db.deleteUserCompany(req, res)
 })
 
+/**
+ * Leetcode
+ */
+app.get('/leetcode', (req, res) => {
+  db.getAllLeetcode(req, res)
+})
+app.get('/leetcode/tags/:tid', (req, res) => {
+  db.getProblemsFromTag(req, res)
+})
+app.post('/userleetcode', (req, res) => {
+  db.upsertUserLeetcode(req, res)
+})
+app.get('/userleetcode/id/:uid', (req, res) => {
+  db.getLeetcodeByUserId(req, res)
+})
+app.delete('/userleetcode/:uid/:lid', (req, res) => {
+  db.deleteUserLeetcode(req, res)
+})
+
+
 app.listen(8080, () => console.log('Server is running!'))

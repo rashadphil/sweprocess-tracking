@@ -2,7 +2,7 @@ import { Popover, Transition, Tab } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import axios from 'axios'
 import { Fragment, useEffect, useState } from 'react'
-import SearchBar from './SearchBar'
+import SearchBar from '../SearchBar'
 import DatePick from './DatePick'
 
 function classNames(...classes: any[]) {

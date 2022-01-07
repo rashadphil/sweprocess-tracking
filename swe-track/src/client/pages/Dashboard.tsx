@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import Table from '../components/Table'
-import TableEntry from '../components/TableEntry'
+import Table from '../components/UserDashboard/Table'
+import TableEntry from '../components/UserDashboard/TableEntry'
 import axios from 'axios'
-import AddCompanyModal from '../components/AddCompanyModal'
-import FilterCompanies from '../components/FilterCompanies'
+import AddCompanyModal from '../components/UserDashboard/AddCompanyModal'
+import FilterCompanies from '../components/UserDashboard/FilterCompanies'
 
 export default function Dashboard({ userData, setUserData }: any) {
   const [companies, setCompanies] = useState([])

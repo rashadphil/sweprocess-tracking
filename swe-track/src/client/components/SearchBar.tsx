@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 // @ts-ignore
 import TrieSearch from 'trie-search'
+import { values } from 'underscore'
 
 export default function SearchBar({
   keys,
@@ -13,14 +14,12 @@ export default function SearchBar({
   filtered: Object[]
   onChange: any
 }) {
-  const [trie, setTrie] = useState(new TrieSearch())
+  const [trie, setTrie] = useState(new TrieSearch('title'))
   const [searchTerm, setSearchTerm] = useState('')
 
   //make sure trie is only built once
   useEffect(() => {
-    keys.forEach((key, index) => {
-      trie.map(key, values[index])
-    })
+    trie.addAll(values)
   }, [])
   //search trie whenver input changes
   useEffect(() => {

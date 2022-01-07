@@ -42,6 +42,42 @@ model users {
   picture        String?            @db.VarChar(512)
   last_update    DateTime?          @db.Timestamp(6)
   user_companies user_companies[]
+  user_leetcode  user_leetcode[]
+}
+
+model leetcode {
+  lid           Int             @id @default(autoincrement())
+  title         String?         @db.VarChar(255)
+  difficulty    String?         @db.VarChar(255)
+  leetcode_tags leetcode_tags[]
+  user_leetcode user_leetcode[]
+}
+
+model leetcode_tags {
+  lid      Int
+  tid      Int
+  leetcode leetcode @relation(fields: [lid], references: [lid], onDelete: Cascade)
+  tag      tag      @relation(fields: [tid], references: [tid], onDelete: Cascade)
+
+  @@id([lid, tid], map: "leetcode_tags_id")
+}
+
+model tag {
+  tid           Int             @id @default(autoincrement())
+  tag_name      String?         @unique @db.VarChar(255)
+  alias         String?         @db.VarChar(255)
+  color         String?         @db.VarChar(255)
+  leetcode_tags leetcode_tags[]
+}
+
+model user_leetcode {
+  uid         Int
+  lid         Int
+  date_solved DateTime? @db.Date
+  leetcode    leetcode  @relation(fields: [lid], references: [lid], onDelete: Cascade, map: "users_leetcode_lid_fkey")
+  users       users     @relation(fields: [uid], references: [uid], onDelete: Cascade, map: "users_leetcode_uid_fkey")
+
+  @@id([uid, lid], map: "users_leetcode_id")
 }
 
 enum application_status {
