@@ -193,37 +193,6 @@ const upsertUserLeetcode = async (req, res) => {
   await updateUser(uid)
   res.status(200).json(userLeetcode)
 }
-// const query = req.query
-// const statusParams =
-//   query.status instanceof Array ? query.status : [query.status]
-// const statusFilter = statusParams.map(status => {
-//   return {
-//     user_status: {
-//       equals: status
-//     }
-//   }
-// })
-// const usersCompanies = await prisma.user_companies.findMany({
-//   where: {
-//     user_id: parseInt(req.params.uid),
-//     OR: statusParams[0] ? statusFilter : undefined
-//   },
-//   orderBy: { user_status: 'desc' }
-// })
-// res.status(200).json(usersCompanies)
-// return usersCompanies
-// select: {
-//   title: true,
-//   difficulty: true,
-//   leetcode_tags: {
-//     select: {
-//       tag: {
-//         select: { tag_name: true, color: true, alias: true }
-//       }
-//     }
-//   }
-// }
-
 const getLeetcodeByUserId = async (req, res) => {
   const query = req.query
   const difficultyParams =
