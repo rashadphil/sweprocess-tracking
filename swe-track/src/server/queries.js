@@ -209,6 +209,9 @@ const getLeetcodeByUserId = async (req, res) => {
       AND: [{ uid: parseInt(req.params.uid) }],
       OR: difficultyParams[0] ? difficultyFilter : undefined
     },
+    orderBy: {
+      lid: 'asc'
+    },
     include: {
       leetcode: {
         select: {
@@ -245,6 +248,16 @@ const deleteUserLeetcode = async (req, res) => {
   return userLeetcode
 }
 
+const getTags = async (req, res) => {
+  const tags = await prisma.tag.findMany({
+    orderBy: {
+      count: 'desc'
+    }
+  })
+  res.status(200).json(tags)
+  return tags
+}
+
 module.exports = {
   getUsers,
   upsertUser,
@@ -260,5 +273,6 @@ module.exports = {
   getProblemsFromTag,
   upsertUserLeetcode,
   getLeetcodeByUserId,
-  deleteUserLeetcode
+  deleteUserLeetcode,
+  getTags
 }

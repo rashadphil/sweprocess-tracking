@@ -4,22 +4,26 @@ import TableEntry from '../components/Leetcode/TableEntry'
 import axios from 'axios'
 import AddProblemModal from '../components/Leetcode/AddProblemModal'
 import FilterDifficulty from '../components/Leetcode/FilterDifficulty'
+import FilterTag from '../components/Leetcode/FilterTag'
 
 export default function LeetcodeDashboard({ userData, setUserData }: any) {
   const [problems, setProblems] = useState([])
-  const [difficultyFilter, setDifficultyFilter] = useState<Array<string>>([])
+  const [difficultyFilter, setDifficultyFilter] = useState<string[]>([])
+  const [tagFilter, setTagFilter] = useState<number[]>([])
 
   useEffect(() => {
     getUserLeetcode(userData.uid, difficultyFilter)
   }, [userData, difficultyFilter])
 
   const getUserLeetcode = async (uid: number, difficultyFilter: string[]) => {
-    const filterParam = difficultyFilter.map(difficulty => `difficulty=${difficulty}`).join('&')
+    const difficultyParam = difficultyFilter
+      .map(difficulty => `difficulty=${difficulty}`)
+      .join('&')
+    const tagParam = tagFilter.map(tag => `tag=${tag}`).join('&')
     const response = await axios.get(
-      `http://localhost:8080/userleetcode/id/${uid}?${filterParam}`
+      `http://localhost:8080/userleetcode/id/${uid}?${difficultyParam}?${tagParam}`
     )
     const data = response.data
-    console.log(data)
     const userLeetcode = data.map(
       (entry: {
         uid: number
@@ -47,6 +51,7 @@ export default function LeetcodeDashboard({ userData, setUserData }: any) {
                 filter={difficultyFilter}
                 setFilter={setDifficultyFilter}
               />
+              <FilterTag filter={tagFilter} setFilter={setTagFilter} />
               <AddProblemModal userData={userData} setUserData={setUserData} />
             </div>
           </div>

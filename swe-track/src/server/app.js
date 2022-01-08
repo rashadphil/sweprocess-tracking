@@ -94,6 +94,11 @@ app.get('/userleetcode/id/:uid', (req, res) => {
 app.delete('/userleetcode/:uid/:lid', (req, res) => {
   db.deleteUserLeetcode(req, res)
 })
-
+/**
+ * Tags
+ */
+app.get('/tags', (req, res) => {
+  db.getTags(req, res)
+})
 
 app.listen(8080, () => console.log('Server is running!'))

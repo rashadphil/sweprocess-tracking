@@ -67,6 +67,7 @@ model tag {
   tag_name      String?         @unique @db.VarChar(255)
   alias         String?         @db.VarChar(255)
   color         String?         @db.VarChar(255)
+  count         Int?
   leetcode_tags leetcode_tags[]
 }
 
