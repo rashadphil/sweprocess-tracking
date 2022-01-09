@@ -197,45 +197,31 @@ const getLeetcodeByUserId = async (req, res) => {
   const query = req.query
   const difficultyParams =
     query.difficulty instanceof Array ? query.difficulty : [query.difficulty]
-  const difficultyFilter = !difficultyParams[0]
-    ? []
-    : difficultyParams.map(difficulty => {
-        return {
-          leetcode: {
-            is: { difficulty: { equals: difficulty, mode: 'insensitive' } }
-          }
-        }
-      })
-  const tagParams = query.tag instanceof Array ? query.tag : [query.tag]
-  const tagFilter = !tagParams[0]
-    ? []
-    : tagParams.map(tag => {
-        return {
-          tag: {
-            is: { tid: { equals: tag } }
-          }
-        }
-      })
-  const allFilters = difficultyFilter.concat(tagFilter)
-  const userLeetcode = await prisma.user_leetcode.findMany({
+  const tagParams = (query.tag instanceof Array ? query.tag : [query.tag]).map(
+    Number
+  )
+  const userLeetcode = await prisma.leetcode.findMany({
     where: {
-      AND: [{ uid: parseInt(req.params.uid) }],
-      OR: allFilters[0] ? allFilters : undefined
-    },
-    orderBy: {
-      lid: 'asc'
+      AND: [
+        {
+          difficulty: {
+            in: difficultyParams[0] ? difficultyParams : undefined,
+            mode: 'insensitive'
+          }
+        },
+        { user_leetcode: { some: { uid: parseInt(req.params.uid) } } },
+        {
+          leetcode_tags: {
+            some: { tid: { in: tagParams[0] ? tagParams : undefined } }
+          }
+        }
+      ]
     },
     include: {
-      leetcode: {
+      leetcode_tags: {
         select: {
-          title: true,
-          difficulty: true,
-          leetcode_tags: {
-            select: {
-              tag: {
-                select: { tid: true, tag_name: true, color: true, alias: true }
-              }
-            }
+          tag: {
+            select: { tid: true, tag_name: true, alias: true, color: true }
           }
         }
       }
