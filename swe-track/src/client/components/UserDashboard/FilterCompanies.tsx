@@ -1,6 +1,5 @@
 import { Popover, Transition, Tab } from '@headlessui/react'
 import { AdjustmentsIcon } from '@heroicons/react/outline'
-import { ChevronDownIcon } from '@heroicons/react/solid'
 import axios from 'axios'
 import { Fragment, useEffect, useState } from 'react'
 

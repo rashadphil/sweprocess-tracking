@@ -212,7 +212,7 @@ const getLeetcodeByUserId = async (req, res) => {
         { user_leetcode: { some: { uid: parseInt(req.params.uid) } } },
         {
           leetcode_tags: {
-            some: { tid: { in: tagParams[0] ? tagParams : undefined } }
+            some: { tid: { in: isNaN(tagParams[0]) ? undefined : tagParams } }
           }
         }
       ]

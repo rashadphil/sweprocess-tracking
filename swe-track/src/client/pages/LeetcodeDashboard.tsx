@@ -5,6 +5,7 @@ import axios from 'axios'
 import AddProblemModal from '../components/Leetcode/AddProblemModal'
 import FilterDifficulty from '../components/Leetcode/FilterDifficulty'
 import FilterTag from '../components/Leetcode/FilterTag'
+import CurrentFiltersSpan from '../components/Leetcode/CurrentFiltersSpan'
 
 type EntryProps = {
   lid: number
@@ -23,11 +24,17 @@ type EntryProps = {
     }
   }[]
 }
+type TagProp = {
+  tid: number
+  tag_name: string
+  alias: string
+  color: string
+}
 
 export default function LeetcodeDashboard({ userData, setUserData }: any) {
   const [problems, setProblems] = useState([])
   const [difficultyFilter, setDifficultyFilter] = useState<string[]>([])
-  const [tagFilter, setTagFilter] = useState<number[]>([])
+  const [tagFilter, setTagFilter] = useState<TagProp[]>([])
 
   useEffect(() => {
     getUserLeetcode(userData.uid)
@@ -37,13 +44,11 @@ export default function LeetcodeDashboard({ userData, setUserData }: any) {
     const difficultyParam = difficultyFilter
       .map(difficulty => `difficulty=${difficulty}`)
       .join('&')
-    const tagParam = tagFilter.map(tag => `tag=${tag}`).join('&')
-    console.log(tagParam)
+    const tagParam = tagFilter.map(tag => `tag=${tag.tid}`).join('&')
     const response = await axios.get(
       `http://localhost:8080/userleetcode/id/${uid}?${difficultyParam}&${tagParam}`
     )
     const data = response.data
-    console.log(data)
     const userLeetcode = data.map((entry: EntryProps) => (
       <TableEntry userLeetcodeData={entry} setUserData={setUserData} />
     ))
@@ -58,13 +63,21 @@ export default function LeetcodeDashboard({ userData, setUserData }: any) {
               Hello {userData.full_name}!
             </h3>
             <div className="inline-flex">
+              <AddProblemModal userData={userData} setUserData={setUserData} />
               <FilterDifficulty
                 filter={difficultyFilter}
                 setFilter={setDifficultyFilter}
               />
               <FilterTag filter={tagFilter} setFilter={setTagFilter} />
-              <AddProblemModal userData={userData} setUserData={setUserData} />
             </div>
+          </div>
+          <div className="mt-3 w-full inline-flex flex-row-reverse">
+            <CurrentFiltersSpan
+              tagFilter={tagFilter}
+              setTagFilter={setTagFilter}
+              difficultyFilter={difficultyFilter}
+              setDifficultyFilter={setDifficultyFilter}
+            />
           </div>
           <Table entries={problems}></Table>
         </div>

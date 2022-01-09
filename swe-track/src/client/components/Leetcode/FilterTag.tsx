@@ -14,8 +14,8 @@ const capitalize = (s: string) => {
 }
 const toSnakeCase = (str: string) => str.replace(' ', '_')
 
-const removeItem = (array: any[], value: any) => {
-  return array.filter(item => item !== value)
+const removeItem = (array: TagProp[], value: TagProp) => {
+  return array.filter(item => item.tid !== value.tid)
 }
 
 type TagProp = {
@@ -31,7 +31,7 @@ function Popup({
   updateTagFilters
 }: {
   tags: TagProp[]
-  filtered: number[]
+  filtered: TagProp[]
   updateTagFilters: (tag: TagProp) => void
 }) {
   return (
@@ -45,7 +45,7 @@ function Popup({
               inline-flex items-center justify-center m-1 px-2 py-0 rounded-full
               text-xs leading-6 hover:cursor-pointer text-gray-700 , 
               ${
-                filtered.includes(tid)
+                filtered.includes(tag)
                   ? 'bg-blue-400 text-black'
                   : 'bg-gray-200'
               }`}
@@ -63,17 +63,17 @@ export default function FilterTag({
   filter,
   setFilter
 }: {
-  filter: number[]
-  setFilter: (filter: number[]) => void
+  filter: TagProp[]
+  setFilter: (filter: TagProp[]) => void
 }) {
   const [tags, setTags] = useState<TagProp[]>([])
 
   const updateTagFilters = (tag: TagProp) => {
-    const { tid } = tag
-    if (filter.includes(tid)) {
-      setFilter(removeItem(filter, tid))
+    console.log(filter)
+    if (filter.includes(tag)) {
+      setFilter(removeItem(filter, tag))
     } else {
-      setFilter([...filter, tid])
+      setFilter([...filter, tag])
     }
   }
 
