@@ -84,26 +84,11 @@ export default function TableEntry({
     await axios.delete(`http://localhost:8080/userleetcode/${uid}/${lid}`)
     setUserData((await axios.get(`http://localhost:8080/users/${uid}`)).data)
   }
-  // const modifyEntry = async (change: string | Date) => {
-  //   const data = {
-  //     company_id: company_id,
-  //     user_id: user_id,
-  //     user_status: user_status,
-  //     date_applied: date_applied
-  //   }
-  //   typeof change === 'string'
-  //     ? (data.user_status = change)
-  //     : (data.date_applied = change)
-  //   await axios.post('http://localhost:8080/usercompany', data)
-  //   setUserData(
-  //     (await axios.get(`http://localhost:8080/users/${user_id}`)).data
-  //   )
-  // }
 
-  function TitleSpan({ title }: { title: string }) {
+  function TitleSpan({ title, lid }: { title: string; lid: number }) {
     return (
       <a href={toLink(title)} target="_blank" className="text-sm font-medium">
-        {title}
+        {lid}. {title}
       </a>
     )
   }
@@ -155,7 +140,7 @@ export default function TableEntry({
       <td className="px-6 py-2 text-left whitespace-nowrap ">
         <div className="flex items-center">
           <div className="mr-2"></div>
-          <TitleSpan title={title} />
+          <TitleSpan title={title} lid={lid} />
         </div>
       </td>
       <td className="pr-3 py-2 text-center">
