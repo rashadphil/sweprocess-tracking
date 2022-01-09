@@ -68,15 +68,10 @@ const toLink = (s: string) => {
 }
 
 export default function TableEntry({
-  userLeetcodeData: {
-    lid,
-    title,
-    difficulty,
-    user_leetcode: { uid, date_solved },
-    leetcode_tags
-  },
+  userLeetcodeData: { lid, title, difficulty, user_leetcode, leetcode_tags },
   setUserData
 }: any) {
+  const { uid, date_solved } = user_leetcode[0]
   const tags = leetcode_tags.map(
     (leetcode_tag: { tag: Object }) => leetcode_tag.tag
   )

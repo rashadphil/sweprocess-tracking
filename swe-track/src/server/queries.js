@@ -193,6 +193,7 @@ const upsertUserLeetcode = async (req, res) => {
   await updateUser(uid)
   res.status(200).json(userLeetcode)
 }
+
 const getLeetcodeByUserId = async (req, res) => {
   const query = req.query
   const difficultyParams =

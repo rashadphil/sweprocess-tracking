@@ -140,7 +140,7 @@ export default function AddCompanyModal({ userData, setUserData }: any) {
                         className={classNames('bg-white rounded-xl px-3 ')}
                       >
                         <SearchBar
-                          keys={allCompanyData.map(data => data.company_name)}
+                          keyName={'company_name'}
                           values={allCompanyData}
                           filtered={displayCompanies}
                           onChange={(filtered: Object[]) =>

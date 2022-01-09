@@ -139,7 +139,7 @@ export default function AddProblemModal({ userData, setUserData }: any) {
                         className={classNames('bg-white rounded-xl px-3 ')}
                       >
                         <SearchBar
-                          keys={allProblemData.map(data => data.title)}
+                          keyName={'title'}
                           values={allProblemData}
                           filtered={displayProblems}
                           onChange={(filtered: Object[]) =>

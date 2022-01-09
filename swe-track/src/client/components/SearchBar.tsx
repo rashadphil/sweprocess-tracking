@@ -4,17 +4,17 @@ import TrieSearch from 'trie-search'
 import { values } from 'underscore'
 
 export default function SearchBar({
-  keys,
+  keyName,
   values,
   filtered,
   onChange
 }: {
-  keys: string[]
+  keyName: string
   values: Object[]
   filtered: Object[]
   onChange: any
 }) {
-  const [trie, setTrie] = useState(new TrieSearch('title'))
+  const [trie, setTrie] = useState(new TrieSearch(keyName))
   const [searchTerm, setSearchTerm] = useState('')
 
   //make sure trie is only built once
