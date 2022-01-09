@@ -197,17 +197,30 @@ const getLeetcodeByUserId = async (req, res) => {
   const query = req.query
   const difficultyParams =
     query.difficulty instanceof Array ? query.difficulty : [query.difficulty]
-  const difficultyFilter = difficultyParams.map(difficulty => {
-    return {
-      leetcode: {
-        is: { difficulty: { equals: difficulty, mode: 'insensitive' } }
-      }
-    }
-  })
+  const difficultyFilter = !difficultyParams[0]
+    ? []
+    : difficultyParams.map(difficulty => {
+        return {
+          leetcode: {
+            is: { difficulty: { equals: difficulty, mode: 'insensitive' } }
+          }
+        }
+      })
+  const tagParams = query.tag instanceof Array ? query.tag : [query.tag]
+  const tagFilter = !tagParams[0]
+    ? []
+    : tagParams.map(tag => {
+        return {
+          tag: {
+            is: { tid: { equals: tag } }
+          }
+        }
+      })
+  const allFilters = difficultyFilter.concat(tagFilter)
   const userLeetcode = await prisma.user_leetcode.findMany({
     where: {
       AND: [{ uid: parseInt(req.params.uid) }],
-      OR: difficultyParams[0] ? difficultyFilter : undefined
+      OR: allFilters[0] ? allFilters : undefined
     },
     orderBy: {
       lid: 'asc'
@@ -220,7 +233,7 @@ const getLeetcodeByUserId = async (req, res) => {
           leetcode_tags: {
             select: {
               tag: {
-                select: { tag_name: true, color: true, alias: true }
+                select: { tid: true, tag_name: true, color: true, alias: true }
               }
             }
           }
