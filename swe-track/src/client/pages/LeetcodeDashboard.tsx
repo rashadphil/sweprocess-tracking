@@ -6,36 +6,47 @@ import AddProblemModal from '../components/Leetcode/AddProblemModal'
 import FilterDifficulty from '../components/Leetcode/FilterDifficulty'
 import FilterTag from '../components/Leetcode/FilterTag'
 
+type EntryProps = {
+  lid: number
+  title: string
+  difficulty: string
+  user_leetcode: {
+    uid: number
+    date_solved: Date
+  }[]
+  leetcode_tags: {
+    tag: {
+      tid: number
+      tag_name: string
+      color: string
+      alias: string
+    }
+  }[]
+}
+
 export default function LeetcodeDashboard({ userData, setUserData }: any) {
   const [problems, setProblems] = useState([])
   const [difficultyFilter, setDifficultyFilter] = useState<string[]>([])
   const [tagFilter, setTagFilter] = useState<number[]>([])
 
   useEffect(() => {
-    getUserLeetcode(userData.uid, difficultyFilter)
-  }, [userData, difficultyFilter])
+    getUserLeetcode(userData.uid)
+  }, [userData, difficultyFilter, tagFilter])
 
-  const getUserLeetcode = async (uid: number, difficultyFilter: string[]) => {
+  const getUserLeetcode = async (uid: number) => {
     const difficultyParam = difficultyFilter
       .map(difficulty => `difficulty=${difficulty}`)
       .join('&')
     const tagParam = tagFilter.map(tag => `tag=${tag}`).join('&')
+    console.log(tagParam)
     const response = await axios.get(
-      `http://localhost:8080/userleetcode/id/${uid}?${difficultyParam}?${tagParam}`
+      `http://localhost:8080/userleetcode/id/${uid}?${difficultyParam}&${tagParam}`
     )
     const data = response.data
-    const userLeetcode = data.map(
-      (entry: {
-        uid: number
-        lid: number
-        date_solved: Date
-        leetcode: {
-          difficulty: string
-          title: string
-          leetcode_tags: Array<Object>
-        }
-      }) => <TableEntry userLeetcodeData={entry} setUserData={setUserData} />
-    )
+    console.log(data)
+    const userLeetcode = data.map((entry: EntryProps) => (
+      <TableEntry userLeetcodeData={entry} setUserData={setUserData} />
+    ))
     setProblems(userLeetcode)
   }
   return (

@@ -69,14 +69,14 @@ const toLink = (s: string) => {
 
 export default function TableEntry({
   userLeetcodeData: {
-    uid,
     lid,
-    date_solved,
-    leetcode: { difficulty, title, leetcode_tags }
+    title,
+    difficulty,
+    user_leetcode: { uid, date_solved },
+    leetcode_tags
   },
   setUserData
 }: any) {
-  console.log(leetcode_tags)
   const tags = leetcode_tags.map(
     (leetcode_tag: { tag: Object }) => leetcode_tag.tag
   )
@@ -127,7 +127,6 @@ export default function TableEntry({
     alias: string
   }
   function TagsElement({ tags }: { tags: TagProp[] }) {
-    console.log(tags)
     return (
       <div className="w-72 overflow-x-scroll scrollbar-hide">
         {tags.map((tagInfo: TagProp) => {
@@ -165,7 +164,7 @@ export default function TableEntry({
         </div>
       </td>
       <td className="px-8 py-2 text-left">
-          <TagsElement tags={tags} />
+        <TagsElement tags={tags} />
       </td>
       <td className="px-6 py-2 text-left">
         <div></div>
