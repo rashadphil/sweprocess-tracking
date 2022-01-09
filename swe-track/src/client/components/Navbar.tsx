@@ -1,14 +1,12 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import ToggleTheme from './ToggleTheme'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', current: true },
-  { name: 'Team', href: '/team', current: false },
-  { name: 'Projects', href: '/projects', current: false },
-  { name: 'Calendar', href: '/calendar', current: false }
+  { name: 'Dashboard', href: '/dashboard' },
+  { name: 'Leetcode', href: '/leetcode' }
 ]
 
 function classNames(...classes: any) {
@@ -54,18 +52,19 @@ export default function Navbar({ userData, setUserData }: any) {
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex mt-3 space-x-4">
                     {navigation.map(item => (
-                      <Link
+                      <NavLink
                         to={item.href}
-                        className={classNames(
-                          item.current
-                            ? 'text-gray-900 dark:text-white rounded-none border-b-4 border-red-400'
-                            : 'text-gray-500 dark:text-gray-300 hover:bg-red-400 hover:text-white',
-                          'px-3 py-2 rounded-md text-sm font-medium'
-                        )}
-                        aria-current={item.current ? 'page' : undefined}
+                        className={({ isActive }) =>
+                          classNames(
+                            isActive
+                              ? 'text-gray-900 dark:text-white rounded-none border-b-4 border-red-400'
+                              : 'text-gray-500 dark:text-gray-300 hover:bg-red-400 hover:text-white',
+                            'px-3 py-2 rounded-md font-medium text-sm'
+                          )
+                        }
                       >
                         {item.name}
-                      </Link>
+                      </NavLink>
                     ))}
                   </div>
                 </div>
@@ -152,13 +151,13 @@ export default function Navbar({ userData, setUserData }: any) {
                   key={item.name}
                   as="a"
                   href={item.href}
-                  className={classNames(
-                    item.current
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block px-3 py-2 rounded-md text-base font-medium'
-                  )}
-                  aria-current={item.current ? 'page' : undefined}
+                  // className={classNames(
+                  //   item.href == location
+                  //     ? 'bg-gray-900 text-white'
+                  //     : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                  //   'block px-3 py-2 rounded-md text-base font-medium'
+                  // )}
+                  // aria-current={item.href == location ? 'page' : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>

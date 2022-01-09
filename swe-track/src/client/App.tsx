@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard'
 import { ThemeProvider } from './components/themeContext'
 import LoginPage from './pages/LoginPage'
 import { Outlet, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import './App.css'
 import AddCompanyModal from './components/UserDashboard/AddCompanyModal'
@@ -18,15 +19,34 @@ function App() {
   )
   return (
     <ThemeProvider>
-      <div className="transition-colors duration-300 App bg-gray-50 dark:bg-gray-700">
-        <Navbar userData={userData} setUserData={setUserData} />
-        {userData ? (
-          // <Dashboard userData={userData} setUserData={setUserData} />
-          <LeetcodeDashboard userData={userData} setUserData={setUserData} />
-        ) : (
-          <LoginPage userData={userData} setUserData={setUserData} />
-        )}
-      </div>
+      <BrowserRouter>
+        <div className="transition-colors duration-300 App bg-gray-50 dark:bg-gray-700">
+          <Navbar userData={userData} setUserData={setUserData} />
+          <Routes>
+            <Route
+              path="dashboard"
+              element={
+                <Dashboard userData={userData} setUserData={setUserData} />
+              }
+            />
+            <Route
+              path="leetcode"
+              element={
+                <LeetcodeDashboard
+                  userData={userData}
+                  setUserData={setUserData}
+                />
+              }
+            />
+            <Route
+              path="login"
+              element={
+                <LoginPage userData={userData} setUserData={setUserData} />
+              }
+            />
+          </Routes>
+        </div>
+      </BrowserRouter>
       <Outlet />
     </ThemeProvider>
   )

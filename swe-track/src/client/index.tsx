@@ -9,15 +9,7 @@ import LoginPage from './pages/LoginPage'
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="team" />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 )
