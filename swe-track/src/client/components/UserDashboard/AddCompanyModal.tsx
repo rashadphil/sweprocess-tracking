@@ -168,12 +168,12 @@ export default function AddCompanyModal({ userData, setUserData }: any) {
                           setSearchTerm={setSearchTerm}
                         />
                         {/* list of companies */}
-                        <div className="overflow-scroll h-72">
+                        <div className="overflow-scroll h-80">
                           {displayCompanies.length > 0 ? (
                             displayCompanies.map(company => (
                               <ul className="flex justify-start">
                                 <li
-                                  className="text-md py-1.5 inline-flex pl-3 hover:bg-gray-200 hover:cursor-pointer w-full"
+                                  className="text-md py-1 inline-flex pl-3 hover:bg-gray-200 hover:cursor-pointer w-full"
                                   onClick={() => {
                                     setCurrentTab(1)
                                     setNewEntry({
@@ -183,7 +183,7 @@ export default function AddCompanyModal({ userData, setUserData }: any) {
                                   }}
                                 >
                                   <img
-                                    className="object-scale-down w-8 h-8"
+                                    className="object-scale-down w-7 h-7"
                                     src={`//logo.clearbit.com/${company.website_link}`}
                                   />
                                   <h3 className="pt-1 pl-3">

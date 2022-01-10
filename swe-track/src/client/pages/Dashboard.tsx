@@ -4,6 +4,7 @@ import TableEntry from '../components/UserDashboard/TableEntry'
 import axios from 'axios'
 import AddCompanyModal from '../components/UserDashboard/AddCompanyModal'
 import FilterCompanies from '../components/UserDashboard/FilterCompanies'
+import CurrentFiltersSpan from '../components/UserDashboard/CurrentFiltersSpan'
 
 type TableSortProps = {
   company_name: string
@@ -47,13 +48,14 @@ export default function Dashboard({ userData, setUserData }: any) {
     )
     setCompanies(userCompanies)
   }
+  const [first, last] = userData.full_name.split(' ')
   return (
     <div className="mt-20 overflow-x-auto">
       <div className="flex justify-center min-h-screen overflow-hidden font-sans min-w-screen bg-white-400">
         <div className="w-full lg:w-5/6">
           <div className="inline-flex justify-between w-full">
             <h3 className="text-left ml-3 text-4xl font-[Oceanwide] dark:text-white">
-              Hello {userData.full_name}!
+              Hello {first}!
             </h3>
             <div className="inline-flex">
               <FilterCompanies
@@ -62,6 +64,14 @@ export default function Dashboard({ userData, setUserData }: any) {
               />
               <AddCompanyModal userData={userData} setUserData={setUserData} />
             </div>
+          </div>
+          <div className="mt-3 w-full inline-flex flex-row-reverse">
+            <CurrentFiltersSpan
+              statusFilter={statusFilter}
+              setStatusFilter={setStatusFilter}
+              // difficultyFilter={difficultyFilter}
+              // setDifficultyFilter={setDifficultyFilter}
+            />
           </div>
           <Table
             entries={companies}

@@ -10,9 +10,9 @@ function classNames(...classes: any[]) {
 }
 
 const difficultyColors = new Map<string, string>([
-  ['Easy', 'green'],
-  ['Medium', 'yellow'],
-  ['Hard', 'red']
+  ['easy', 'green'],
+  ['medium', 'yellow'],
+  ['hard', 'red']
 ])
 const capitalize = (s: string) => {
   return s.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())
@@ -165,7 +165,7 @@ export default function AddProblemModal({ userData, setUserData }: any) {
                               >
                                 <div className="inline-flex justify-between w-full">
                                   <div className="text-left pt-1 pl-3">
-                                    {capitalize(problem.title)}
+                                    {problem.lid}. {capitalize(problem.title)}
                                   </div>
                                   <div>
                                     <DifficultySpan

@@ -186,7 +186,11 @@ const updatePopularity = async (cid, amount) => {
  * Leetcode
  */
 const getAllLeetcode = async (req, res) => {
-  const problems = await prisma.leetcode.findMany({})
+  const problems = await prisma.leetcode.findMany({
+    orderBy: {
+      lid: 'asc'
+    }
+  })
   res.status(200).json(problems)
   return problems
 }

@@ -71,13 +71,14 @@ export default function LeetcodeDashboard({ userData, setUserData }: any) {
     ))
     setProblems(userLeetcode)
   }
+  const [first, last] = userData.full_name.split(' ')
   return (
     <div className="mt-20 overflow-x-auto">
       <div className="flex justify-center min-h-screen overflow-hidden font-sans min-w-screen bg-white-400">
         <div className="w-full lg:w-5/6">
           <div className="inline-flex justify-between w-full">
             <h3 className="text-left ml-3 text-4xl font-[Oceanwide] dark:text-white">
-              Hello {userData.full_name}!
+              Hello {first}!
             </h3>
             <div className="inline-flex">
               <AddProblemModal userData={userData} setUserData={setUserData} />

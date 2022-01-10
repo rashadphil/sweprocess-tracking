@@ -2,7 +2,6 @@ import React from 'react'
 import { TrashIcon } from '@heroicons/react/outline'
 import axios from 'axios'
 import dateformat from 'dateformat'
-import UserStatusPopup from './UserStatusPopup'
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')

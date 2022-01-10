@@ -3,6 +3,7 @@ import { TrashIcon } from '@heroicons/react/outline'
 import axios from 'axios'
 import dateformat from 'dateformat'
 import UserStatusPopup from './UserStatusPopup'
+import CurrentFiltersSpan from './CurrentFiltersSpan'
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')
@@ -60,7 +61,7 @@ export default function TableEntry({
   }
   return (
     <tr className="text-black border-b border-gray-200 group dark:border-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white">
-      <td className="px-6 py-3 text-left whitespace-nowrap ">
+      <td className="px-6 py-2 text-left whitespace-nowrap ">
         <div className="flex items-center">
           <div className="mr-2">
             <img
@@ -81,12 +82,12 @@ export default function TableEntry({
           />
         </div>
       </td>
-      <td className="px-6 py-3 text-left">
+      <td className="px-6 py-2 text-left">
         <div className="flex items-center">
           <span>{dateformat(date_applied, 'd mmm yyyy')}</span>
         </div>
       </td>
-      <td className="px-6 py-3 text-center">
+      <td className="px-6 py-2 text-center">
         <div className="flex items-center justify-center">
           <span className="w-6 h-6 text-green-600 transform bg-green-200 rounded-full hover:scale-125">
             {' '}
@@ -107,7 +108,7 @@ export default function TableEntry({
           />
         </div>
       </td>
-      <td className="px-1 py-3 text-center ">
+      <td className="px-1 py-2 text-center ">
         <div className="flex items-center justify-center">
           <TrashIcon
             className="invisible w-5 h-5 ml-2 text-red-300 group-hover:visible hover:text-red-600 hover:cursor-pointer "
