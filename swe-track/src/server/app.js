@@ -53,6 +53,9 @@ app.get('/users/:uid', (req, res) => {
 app.get('/companies', (req, res) => {
   db.getCompanies(req, res)
 })
+app.post('/companies', (req, res) => {
+  db.upsertCompany(req, res)
+})
 app.get('/companies/name/:name', (req, res) => {
   db.getCompanyByName(req, res)
 })

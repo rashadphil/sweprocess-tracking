@@ -34,6 +34,24 @@ const getUserById = async (req, res) => {
   res.status(200).json(user)
   return user
 }
+//Specifically for companies not verified
+const upsertCompany = async (req, res) => {
+  const { company_name } = req.body
+  const company = await prisma.companies.upsert({
+    where: { company_name: company_name },
+    update: { popularity: { increment: 1 } },
+    create: {
+      company_name,
+      website_link: `${company_name.replaceAll('_', '')}.com`,
+      application_link: null,
+      intern_salary: null,
+      popularity: 1,
+      verified: false
+    }
+  })
+  res.status(200).json(company)
+  return company
+}
 
 const getCompanies = async (req, res) => {
   const sort = req.query.sort
@@ -266,6 +284,7 @@ module.exports = {
   upsertUser,
   getUserById,
   getCompanies,
+  upsertCompany,
   getCompanyByName,
   getCompanyById,
   upsertUserCompany,

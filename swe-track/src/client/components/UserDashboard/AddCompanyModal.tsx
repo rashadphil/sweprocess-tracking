@@ -1,5 +1,5 @@
 import { Popover, Transition, Tab } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/solid'
+import { ChevronDownIcon, PlusIcon } from '@heroicons/react/solid'
 import axios from 'axios'
 import { Fragment, useEffect, useState } from 'react'
 import SearchBar from '../SearchBar'
@@ -12,6 +12,7 @@ function classNames(...classes: any[]) {
 const capitalize = (s: string) => {
   return s.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())
 }
+const toSnakeCase = (str: string) => str.toLowerCase().replace(' ', '_')
 
 const statusColors = {
   offer: 'green',
@@ -27,6 +28,7 @@ export default function AddCompanyModal({ userData, setUserData }: any) {
   const [currentTab, setCurrentTab] = useState(0)
   const [allCompanyData, setAllCompanyData] = useState<any[]>([])
   const [displayCompanies, setDisplayCompanies] = useState<any[]>([])
+  const [searchTerm, setSearchTerm] = useState<string>('')
   const defaultCompanyData = {
     application_link: null,
     cid: null,
@@ -56,19 +58,35 @@ export default function AddCompanyModal({ userData, setUserData }: any) {
     const response = await axios.get(
       'http://localhost:8080/companies?sort=popularity'
     )
-    const data = response.data
+    const data = response.data.filter(
+      (companyData: any) => companyData.verified
+    )
     setAllCompanyData(data)
     setDisplayCompanies(data)
   }
 
+  const addUnverifiedCompany = async (company_name: string) => {
+    const response = await axios.post('http://localhost:8080/companies', {
+      company_name: toSnakeCase(company_name)
+    })
+    const company = response.data
+    setNewEntry({
+      ...newEntry,
+      companyData: company
+    })
+  }
+
   const sendEntryToDb = async () => {
     const { companyData, status, date } = newEntry
+    const { cid, company_name } = companyData
+    console.log(newEntry)
     //make sure entry is complete
-    if (!companyData.cid || !status || date === null) return
+    if ((!cid && !company_name) || !status || date === null) return
+
     await axios.post('http://localhost:8080/usercompany', {
       user_id: userData.uid,
-      company_id: companyData.cid,
-      company_name: companyData.company_name,
+      company_id: cid,
+      company_name: company_name,
       user_status: status.replace(' ', '_'),
       date_applied: date || new Date()
     })
@@ -146,31 +164,49 @@ export default function AddCompanyModal({ userData, setUserData }: any) {
                           onChange={(filtered: Object[]) =>
                             setDisplayCompanies(filtered)
                           }
+                          searchTerm={searchTerm}
+                          setSearchTerm={setSearchTerm}
                         />
                         {/* list of companies */}
                         <div className="overflow-scroll h-72">
-                          {displayCompanies.map(company => (
-                            <ul className="flex justify-start">
-                              <li
-                                className="text-md py-1.5 inline-flex pl-3 hover:bg-gray-200 hover:cursor-pointer w-full"
-                                onClick={() => {
-                                  setCurrentTab(1)
-                                  setNewEntry({
-                                    ...newEntry,
-                                    companyData: company
-                                  })
-                                }}
-                              >
-                                <img
-                                  className="object-scale-down w-8 h-8"
-                                  src={`//logo.clearbit.com/${company.website_link}`}
-                                />
-                                <h3 className="pt-1 pl-3">
-                                  {capitalize(company.company_name)}
-                                </h3>
-                              </li>
-                            </ul>
-                          ))}
+                          {displayCompanies.length > 0 ? (
+                            displayCompanies.map(company => (
+                              <ul className="flex justify-start">
+                                <li
+                                  className="text-md py-1.5 inline-flex pl-3 hover:bg-gray-200 hover:cursor-pointer w-full"
+                                  onClick={() => {
+                                    setCurrentTab(1)
+                                    setNewEntry({
+                                      ...newEntry,
+                                      companyData: company
+                                    })
+                                  }}
+                                >
+                                  <img
+                                    className="object-scale-down w-8 h-8"
+                                    src={`//logo.clearbit.com/${company.website_link}`}
+                                  />
+                                  <h3 className="pt-1 pl-3">
+                                    {capitalize(company.company_name)}
+                                  </h3>
+                                </li>
+                              </ul>
+                            ))
+                          ) : (
+                            <div
+                              className="inline-flex mt-2 py-1 w-full border-dashed border-4 rounded-sm hover:border-gray-600 hover:cursor-pointer "
+                              onClick={() => {
+                                addUnverifiedCompany(searchTerm)
+                                setCurrentTab(1)
+                              }}
+                            >
+                              <PlusIcon className="pl-1 w-5 h-5 text-gray-500" />
+                              <span className="text-gray-500 mx-2">
+                                Add Company:
+                              </span>
+                              <span>"{searchTerm}"</span>
+                            </div>
+                          )}
                         </div>
                       </Tab.Panel>
 

@@ -36,6 +36,7 @@ export default function AddProblemModal({ userData, setUserData }: any) {
   const [currentTab, setCurrentTab] = useState(0)
   const [allProblemData, setAllProblemData] = useState<any[]>([])
   const [displayProblems, setDisplayProblems] = useState<any[]>([])
+  const [searchTerm, setSearchTerm] = useState<string>('')
   const defaultProblemData = {
     lid: null,
     title: null,
@@ -145,6 +146,8 @@ export default function AddProblemModal({ userData, setUserData }: any) {
                           onChange={(filtered: Object[]) =>
                             setDisplayProblems(filtered)
                           }
+                          searchTerm={searchTerm}
+                          setSearchTerm={setSearchTerm}
                         />
                         {/* list of problems */}
                         <div className="overflow-scroll h-80">

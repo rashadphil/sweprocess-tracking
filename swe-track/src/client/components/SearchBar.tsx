@@ -7,15 +7,18 @@ export default function SearchBar({
   keyName,
   values,
   filtered,
-  onChange
+  onChange,
+  searchTerm,
+  setSearchTerm
 }: {
   keyName: string
   values: Object[]
   filtered: Object[]
   onChange: any
+  searchTerm: string
+  setSearchTerm: (value: string) => void
 }) {
   const [trie, setTrie] = useState(new TrieSearch(keyName))
-  const [searchTerm, setSearchTerm] = useState('')
 
   //make sure trie is only built once
   useEffect(() => {

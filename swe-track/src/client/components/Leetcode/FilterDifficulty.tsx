@@ -17,7 +17,7 @@ const difficultyColors = {
 const capitalize = (s: string) => {
   return s.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())
 }
-const toSnakeCase = (str: string) => str.replace(' ', '_')
+const toSnakeCase = (str: string) => str.replaceAll(' ', '_')
 
 const removeItem = (array: any[], value: any) => {
   return array.filter(item => item !== value)
