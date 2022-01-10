@@ -247,9 +247,7 @@ const getLeetcodeByUserId = async (req, res) => {
       ]
     },
     include: {
-      user_leetcode: {
-        select: { uid: true, date_solved: true }
-      },
+      user_leetcode: { where: { uid: parseInt(req.params.uid) } },
       leetcode_tags: {
         select: {
           tag: {
