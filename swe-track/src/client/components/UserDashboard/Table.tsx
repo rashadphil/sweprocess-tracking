@@ -3,44 +3,56 @@ import {
   ArrowSmDownIcon,
   SelectorIcon
 } from '@heroicons/react/solid'
-import { useState } from 'react'
-
-const sorts = new Map<number, string>([
-  [0, ''],
-  [1, 'asc'],
-  [2, 'desc']
-])
 
 type SortIconProps = {
   className: string
-  sort: number
+  sort: string
   onClick: () => void
 }
 function SortIcon({ className, sort, onClick }: SortIconProps) {
   switch (sort) {
-    case 0:
+    case '':
       return (
         <SelectorIcon
           className={className + ' text-gray-500'}
           onClick={onClick}
         />
       )
-    case 1:
+    case 'asc':
       return <ArrowSmUpIcon className={className} onClick={onClick} />
-    case 2:
+    case 'desc':
       return <ArrowSmDownIcon className={className} onClick={onClick} />
     default:
       return <div></div>
   }
 }
+type TableSortProps = {
+  company_name: string
+  user_status: string
+  date_applied: string
+}
 type HeaderProps = {
   className: string
   title: string
-  sort: number
-  setSort: (value: number) => void
+  type: string
+  tableSort: TableSortProps
+  setTableSort: (value: TableSortProps) => void
 }
 
-function Header({ className, title, sort, setSort }: HeaderProps) {
+const nextSort = new Map<string, string>([
+  ['', 'asc'],
+  ['asc', 'desc'],
+  ['desc', '']
+])
+
+function Header({
+  className,
+  title,
+  type,
+  tableSort,
+  setTableSort
+}: HeaderProps) {
+  const sort = (tableSort as any)[type]
   return (
     <th className={className}>
       <div className="inline-flex">
@@ -48,17 +60,15 @@ function Header({ className, title, sort, setSort }: HeaderProps) {
         <SortIcon
           className="pl-1 w-5 h-5 hover:cursor-pointer"
           sort={sort}
-          onClick={() => setSort(sort == 2 ? 0 : sort + 1)}
+          onClick={() => {
+            setTableSort({ ...tableSort, [type]: nextSort.get(sort) })
+          }}
         />
       </div>
     </th>
   )
 }
-export default function Table({ entries }: any) {
-  const [companySort, setCompanySort] = useState(0)
-  const [statusSort, setStatusSort] = useState(0)
-  const [dateSort, setDateSort] = useState(0)
-  const [problemSort, setProblemSort] = useState(0)
+export default function Table({ entries, tableSort, setTableSort }: any) {
   return (
     <div className="my-6 bg-white rounded shadow-md dark:bg-gray-700">
       <table className="w-full table-auto min-w-max">
@@ -67,26 +77,30 @@ export default function Table({ entries }: any) {
             <Header
               className="px-6 py-3 text-left"
               title={'Company'}
-              sort={companySort}
-              setSort={setCompanySort}
+              type={'company_name'}
+              tableSort={tableSort}
+              setTableSort={setTableSort}
             />
             <Header
               className="px-6 py-3 text-center"
-              title={'Status'}
-              sort={statusSort}
-              setSort={setStatusSort}
+              title={'status'}
+              type={'user_status'}
+              tableSort={tableSort}
+              setTableSort={setTableSort}
             />
             <Header
               className="px-6 py-3 text-left"
               title={'Date Applied'}
-              sort={dateSort}
-              setSort={setDateSort}
+              type={'date_applied'}
+              tableSort={tableSort}
+              setTableSort={setTableSort}
             />
             <Header
               className="px-6 py-3 text-center"
               title={'LC Problems'}
-              sort={problemSort}
-              setSort={setProblemSort}
+              type={''}
+              tableSort={tableSort}
+              setTableSort={setTableSort}
             />
           </tr>
           {entries}

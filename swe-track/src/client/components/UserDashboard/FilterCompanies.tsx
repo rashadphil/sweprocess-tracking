@@ -33,10 +33,6 @@ export default function FilterCompanies({
   filter: string[]
   setFilter: (filter: string[]) => void
 }) {
-  useEffect(() => {
-    console.log(filter)
-  }, [filter])
-  console.log(Object.entries(statusColors).map(([key, value]) => key))
   return (
     <div className="w-full max-w-sm px-4 font-[Oceanwide]">
       <Popover className="relative">

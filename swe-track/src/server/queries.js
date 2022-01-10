@@ -149,7 +149,7 @@ const getCompaniesByUserId = async (req, res) => {
       user_id: parseInt(req.params.uid),
       OR: statusFilter
     },
-    orderBy: orderBy || { user_status: 'desc' }
+    orderBy: orderBy
   })
   res.status(200).json(usersCompanies)
   return usersCompanies
