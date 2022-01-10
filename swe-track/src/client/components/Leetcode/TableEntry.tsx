@@ -9,9 +9,9 @@ function classNames(...classes: any[]) {
 }
 
 const difficultyColors = new Map<string, string>([
-  ['Easy', 'green'],
-  ['Medium', 'yellow'],
-  ['Hard', 'red']
+  ['easy', 'green'],
+  ['medium', 'yellow'],
+  ['hard', 'red']
 ])
 
 const colorTypesBg = new Map<string, string>([

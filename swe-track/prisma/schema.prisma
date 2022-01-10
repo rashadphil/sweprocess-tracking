@@ -49,7 +49,7 @@ model users {
 model leetcode {
   lid           Int             @id @default(autoincrement())
   title         String?         @db.VarChar(255)
-  difficulty    String?         @db.VarChar(255)
+  difficulty    difficulty?
   leetcode_tags leetcode_tags[]
   user_leetcode user_leetcode[]
 }
@@ -90,6 +90,12 @@ enum application_status {
   interview_rounds @map("interview rounds")
   final_round @map("final round")
   offer
+}
+
+enum difficulty {
+  easy
+  medium
+  hard
 }
 
 enum membership_status {

@@ -235,7 +235,6 @@ const getLeetcodeByUserId = async (req, res) => {
         {
           difficulty: {
             in: difficultyParams[0] ? difficultyParams : undefined,
-            mode: 'insensitive'
           }
         },
         { user_leetcode: { some: { uid: parseInt(req.params.uid) } } },
