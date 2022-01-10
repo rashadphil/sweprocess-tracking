@@ -112,8 +112,10 @@ export default function TableEntry({
         {tags.map((tagInfo: TagProp) => {
           const { tag_name, color, alias } = tagInfo
           const n = Math.floor(Math.random() * colorTypesBg.size)
-          const bgColor = `bg-${Array.from(colorTypesBg.keys())[n]}-200`
-          const textColor = `text-${Array.from(colorTypesTx.keys())[n]}-600`
+          // const bgColor = `bg-${Array.from(colorTypesBg.keys())[n]}-200`
+          // const textColor = `text-${Array.from(colorTypesTx.keys())[n]}-600`
+          const bgColor = 'bg-gray-200'
+          const textColor = 'bg-gray-600'
           return (
             <span
               className={classNames(
