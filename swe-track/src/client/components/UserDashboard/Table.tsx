@@ -26,6 +26,12 @@ function SortIcon({ className, sort, onClick }: SortIconProps) {
       return <div></div>
   }
 }
+const nextSort = new Map<string, string>([
+  ['', 'asc'],
+  ['asc', 'desc'],
+  ['desc', '']
+])
+
 type TableSortProps = {
   company_name: string
   user_status: string
@@ -38,12 +44,6 @@ type HeaderProps = {
   tableSort: TableSortProps
   setTableSort: (value: TableSortProps) => void
 }
-
-const nextSort = new Map<string, string>([
-  ['', 'asc'],
-  ['asc', 'desc'],
-  ['desc', '']
-])
 
 function Header({
   className,
@@ -68,40 +68,47 @@ function Header({
     </th>
   )
 }
+
 export default function Table({ entries, tableSort, setTableSort }: any) {
+  const headers = [
+    {
+      title: 'Company',
+      type: 'company_name',
+      className: 'px-6 py-3 text-left'
+    },
+    {
+      title: 'Status',
+      type: 'user_status',
+      className: 'px-6 py-3 text-center'
+    },
+    {
+      title: 'Date Applied',
+      type: 'date_applied',
+      className: 'px-6 py-3 text-left'
+    },
+    {
+      title: 'LC Problems',
+      type: '',
+      className: 'px-6 py-3 text-center'
+    }
+  ]
   return (
     <div className="my-6 bg-white rounded shadow-md dark:bg-gray-700">
       <table className="w-full table-auto min-w-max">
         <thead>
           <tr className="text-sm leading-normal text-black uppercase bg-white border-b border-black dark:bg-gray-800 dark:text-white">
-            <Header
-              className="px-6 py-3 text-left"
-              title={'Company'}
-              type={'company_name'}
-              tableSort={tableSort}
-              setTableSort={setTableSort}
-            />
-            <Header
-              className="px-6 py-3 text-center"
-              title={'status'}
-              type={'user_status'}
-              tableSort={tableSort}
-              setTableSort={setTableSort}
-            />
-            <Header
-              className="px-6 py-3 text-left"
-              title={'Date Applied'}
-              type={'date_applied'}
-              tableSort={tableSort}
-              setTableSort={setTableSort}
-            />
-            <Header
-              className="px-6 py-3 text-center"
-              title={'LC Problems'}
-              type={''}
-              tableSort={tableSort}
-              setTableSort={setTableSort}
-            />
+            {headers.map(header => {
+              const { title, type, className } = header
+              return (
+                <Header
+                  className={className}
+                  title={title}
+                  type={type}
+                  tableSort={tableSort}
+                  setTableSort={setTableSort}
+                />
+              )
+            })}
           </tr>
           {entries}
         </thead>
