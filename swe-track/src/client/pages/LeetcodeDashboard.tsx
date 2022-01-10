@@ -31,22 +31,39 @@ type TagProp = {
   color: string
 }
 
+type TableSortProps = {
+  lid: string
+  difficulty: string
+}
 export default function LeetcodeDashboard({ userData, setUserData }: any) {
   const [problems, setProblems] = useState([])
   const [difficultyFilter, setDifficultyFilter] = useState<string[]>([])
   const [tagFilter, setTagFilter] = useState<TagProp[]>([])
+  const [tableSort, setTableSort] = useState<TableSortProps>({
+    lid: '',
+    difficulty: ''
+  })
 
   useEffect(() => {
     getUserLeetcode(userData.uid)
-  }, [userData, difficultyFilter, tagFilter])
+  }, [userData, difficultyFilter, tagFilter, tableSort])
+
+  const parseSort = (sort: TableSortProps) => {
+    return JSON.stringify(sort, (key, value) => {
+      if (value) return value
+    })
+      .replaceAll('"', '')
+      .slice(1, -1)
+  }
 
   const getUserLeetcode = async (uid: number) => {
     const difficultyParam = difficultyFilter
       .map(difficulty => `difficulty=${difficulty}`)
       .join('&')
     const tagParam = tagFilter.map(tag => `tag=${tag.tid}`).join('&')
+    const sortParam = parseSort(tableSort)
     const response = await axios.get(
-      `http://localhost:8080/userleetcode/id/${uid}?${difficultyParam}&${tagParam}`
+      `http://localhost:8080/userleetcode/id/${uid}?${difficultyParam}&${tagParam}&sort=${sortParam}`
     )
     const data = response.data
     const userLeetcode = data.map((entry: EntryProps) => (
@@ -79,7 +96,11 @@ export default function LeetcodeDashboard({ userData, setUserData }: any) {
               setDifficultyFilter={setDifficultyFilter}
             />
           </div>
-          <Table entries={problems}></Table>
+          <Table
+            entries={problems}
+            tableSort={tableSort}
+            setTableSort={setTableSort}
+          />
         </div>
       </div>
     </div>

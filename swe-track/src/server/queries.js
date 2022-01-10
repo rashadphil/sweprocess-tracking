@@ -229,12 +229,20 @@ const getLeetcodeByUserId = async (req, res) => {
   const tagParams = (query.tag instanceof Array ? query.tag : [query.tag]).map(
     Number
   )
+  const sort = query.sort ? query.sort.split(',') : null
+  const orderBy = sort
+    ? sort.map(s => {
+        const [property, order] = s.split(':')
+        return { [property]: order }
+      })
+    : undefined
+  console.log(orderBy)
   const userLeetcode = await prisma.leetcode.findMany({
     where: {
       AND: [
         {
           difficulty: {
-            in: difficultyParams[0] ? difficultyParams : undefined,
+            in: difficultyParams[0] ? difficultyParams : undefined
           }
         },
         { user_leetcode: { some: { uid: parseInt(req.params.uid) } } },
@@ -245,6 +253,7 @@ const getLeetcodeByUserId = async (req, res) => {
         }
       ]
     },
+    orderBy: orderBy,
     include: {
       user_leetcode: { where: { uid: parseInt(req.params.uid) } },
       leetcode_tags: {
