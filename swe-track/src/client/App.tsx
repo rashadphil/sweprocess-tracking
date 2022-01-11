@@ -44,6 +44,12 @@ function App() {
                 <LoginPage userData={userData} setUserData={setUserData} />
               }
             />
+            <Route
+              path="signup"
+              element={
+                <LoginPage userData={userData} setUserData={setUserData} />
+              }
+            />
           </Routes>
         </div>
       </BrowserRouter>
