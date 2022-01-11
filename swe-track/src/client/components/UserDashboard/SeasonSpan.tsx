@@ -3,29 +3,39 @@ function classNames(...classes: any) {
 }
 const seasons = [
   {
-    name: '2022 Summer',
-    active: false
+    id: 's22',
+    name: '2022 Summer'
   },
   {
-    name: '2022 Winter',
-    active: false
+    id: 'w22',
+    name: '2022 Winter'
   },
   {
-    name: '2022 New Grad',
-    active: true
+    id: 'ng22',
+    name: '2022 New Grad'
   }
 ]
-export default function SeasonSpan() {
+export default function SeasonSpan({
+  activeSeason,
+  setActiveSeason
+}: {
+  activeSeason: string
+  setActiveSeason: (value: string) => void
+}) {
   return (
     <div className="font-[Oceanwide] border inline-flex rounded-lg bg-gray-200 text-sm">
       {seasons.map(season => {
-        const { name, active } = season
+        const { id, name } = season
+        const active: boolean = activeSeason == id
         return (
           <div
             className={classNames(
-              'py-2 px-2 rounded-lg',
-              active ? 'bg-white text-gray-900' : 'text-gray-500'
+              'py-2 px-2 rounded-lg ',
+              active
+                ? 'bg-white text-gray-900'
+                : 'hover:cursor-pointer transition-all hover:bg-gray-100 text-gray-500'
             )}
+            onClick={() => setActiveSeason(id)}
           >
             {name}
           </div>

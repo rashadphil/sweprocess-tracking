@@ -24,7 +24,7 @@ const statusColors = {
   rejected: 'red'
 }
 
-export default function AddCompanyModal({ userData, setUserData }: any) {
+export default function AddCompanyModal({ season, userData, setUserData }: any) {
   const [currentTab, setCurrentTab] = useState(0)
   const [allCompanyData, setAllCompanyData] = useState<any[]>([])
   const [displayCompanies, setDisplayCompanies] = useState<any[]>([])
@@ -88,7 +88,8 @@ export default function AddCompanyModal({ userData, setUserData }: any) {
       company_id: cid,
       company_name: company_name,
       user_status: status.replace(' ', '_'),
-      date_applied: date || new Date()
+      date_applied: date || new Date(),
+      season: season
     })
 
     setNewEntry({

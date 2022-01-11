@@ -31,7 +31,8 @@ export default function TableEntry({
     user_id,
     company_name,
     user_status,
-    date_applied
+    date_applied,
+    szn
   },
   setUserData
 }: any) {
@@ -40,8 +41,8 @@ export default function TableEntry({
   const bgColor: string = `bg-${statusColors.get(user_status)}-200`
   const textColor: string = `text-${statusColors.get(user_status)}-600`
 
-  const deleteEntry = async (uid: number, cid: number) => {
-    await axios.delete(`http://localhost:8080/usercompany/${uid}/${cid}`)
+  const deleteEntry = async (uid: number, cid: number, szn: string) => {
+    await axios.delete(`http://localhost:8080/usercompany/${uid}/${cid}/${szn}`)
     setUserData((await axios.get(`http://localhost:8080/users/${uid}`)).data)
   }
   const modifyEntry = async (change: string | Date) => {
@@ -113,7 +114,7 @@ export default function TableEntry({
           <TrashIcon
             className="invisible w-5 h-5 ml-2 text-red-300 group-hover:visible hover:text-red-600 hover:cursor-pointer "
             aria-hidden="true"
-            onClick={() => deleteEntry(user_id, company_id)}
+            onClick={() => deleteEntry(user_id, company_id, szn)}
           />
         </div>
       </td>

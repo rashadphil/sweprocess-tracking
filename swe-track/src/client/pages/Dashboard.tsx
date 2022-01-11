@@ -14,6 +14,7 @@ type TableSortProps = {
 }
 export default function Dashboard({ userData, setUserData }: any) {
   const [companies, setCompanies] = useState([])
+  const [season, setSeason] = useState('s22')
   const [statusFilter, setStatusFilter] = useState<string[]>([])
   const [tableSort, setTableSort] = useState<TableSortProps>({
     company_name: '',
@@ -23,7 +24,7 @@ export default function Dashboard({ userData, setUserData }: any) {
 
   useEffect(() => {
     getUserCompanies(userData.uid, statusFilter)
-  }, [userData, statusFilter, tableSort])
+  }, [userData, statusFilter, tableSort, season])
 
   const parseSort = (sort: TableSortProps) => {
     return JSON.stringify(sort, (key, value) => {
@@ -37,7 +38,7 @@ export default function Dashboard({ userData, setUserData }: any) {
     const filterParam = statusFilter.map(status => `status=${status}`).join('&')
     const sortParam = parseSort(tableSort)
     const response = await axios.get(
-      `http://localhost:8080/usercompany/id/${uid}?${filterParam}&sort=${sortParam}`
+      `http://localhost:8080/usercompany/id/${uid}/${season}?${filterParam}&sort=${sortParam}`
     )
     const data = response.data
     const userCompanies = data.map(
@@ -45,6 +46,7 @@ export default function Dashboard({ userData, setUserData }: any) {
         company_name: string
         user_status: string
         date_applied: Date
+        szn: string
       }) => <TableEntry userCompanyData={entry} setUserData={setUserData} />
     )
     setCompanies(userCompanies)
@@ -63,11 +65,15 @@ export default function Dashboard({ userData, setUserData }: any) {
                 filter={statusFilter}
                 setFilter={setStatusFilter}
               />
-              <AddCompanyModal userData={userData} setUserData={setUserData} />
+              <AddCompanyModal
+                season={season}
+                userData={userData}
+                setUserData={setUserData}
+              />
             </div>
           </div>
           <div className="ml-3 w-full inline-flex">
-            <SeasonSpan />
+            <SeasonSpan activeSeason={season} setActiveSeason={setSeason} />
           </div>
           <div className="ml-3 mt-3 w-full inline-flex flex-row">
             <CurrentFiltersSpan

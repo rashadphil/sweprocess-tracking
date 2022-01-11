@@ -72,10 +72,10 @@ app.post('/usercompany', (req, res) => {
 app.get('/usercompany', (req, res) => {
   db.getAllUserCompanies(req, res)
 })
-app.get('/usercompany/id/:uid', (req, res) => {
+app.get('/usercompany/id/:uid/:szn', (req, res) => {
   db.getCompaniesByUserId(req, res)
 })
-app.delete('/usercompany/:uid/:cid', (req, res) => {
+app.delete('/usercompany/:uid/:cid/:szn', (req, res) => {
   db.deleteUserCompany(req, res)
 })
 
@@ -91,7 +91,7 @@ app.get('/leetcode/tags/:tid', (req, res) => {
 app.post('/userleetcode', (req, res) => {
   db.upsertUserLeetcode(req, res)
 })
-app.get('/userleetcode/id/:uid/:szn', (req, res) => {
+app.get('/userleetcode/id/:uid/', (req, res) => {
   db.getLeetcodeByUserId(req, res)
 })
 app.delete('/userleetcode/:uid/:lid', (req, res) => {

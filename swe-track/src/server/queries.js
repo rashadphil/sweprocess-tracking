@@ -161,11 +161,13 @@ const getCompaniesByUserId = async (req, res) => {
 const deleteUserCompany = async (req, res) => {
   const uid = parseInt(req.params.uid)
   const cid = parseInt(req.params.cid)
+  const szn = req.params.szn
   const usersCompanies = await prisma.user_companies.delete({
     where: {
-      user_id_company_id: {
+      user_id_company_id_szn: {
         user_id: uid,
-        company_id: cid
+        company_id: cid,
+        szn: szn
       }
     }
   })
