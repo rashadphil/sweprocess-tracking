@@ -4,9 +4,19 @@ import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import ToggleTheme from './ToggleTheme'
 import { Link, NavLink } from 'react-router-dom'
 
-const navigation = [
+const loggedOutNavigation = [
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' }
+]
+
+const loggedInNavigation = [
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Leetcode', href: '/leetcode' }
+]
+
+const registration = [
+  { name: 'Log in', href: '/login' },
+  { name: 'Sign up', href: '/signup' }
 ]
 
 function classNames(...classes: any) {
@@ -15,9 +25,11 @@ function classNames(...classes: any) {
 
 export default function Navbar({ userData, setUserData }: any) {
   const { picture } = userData || {}
+  const navigation = userData ? loggedInNavigation : loggedOutNavigation
   const handleLogout = () => {
     localStorage.removeItem('userData')
     setUserData(null)
+    window.location.href = '/'
   }
   return (
     <Disclosure as="nav" className="bg-white shadow dark:bg-gray-800">
@@ -70,7 +82,24 @@ export default function Navbar({ userData, setUserData }: any) {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <ToggleTheme />
+                <div className="flex space-x-4">
+                  {registration.map(item => (
+                    <NavLink
+                      to={item.href}
+                      className={({ isActive }) =>
+                        classNames(
+                          isActive
+                            ? 'text-gray-900 dark:text-white rounded-none border-b-4 border-red-400'
+                            : 'text-gray-900 dark:text-gray-300 hover:bg-red-400 hover:text-white',
+                          'px-3 py-2 rounded-md font-medium text-sm'
+                        )
+                      }
+                    >
+                      {item.name}
+                    </NavLink>
+                  ))}
+                </div>
+                {/* <ToggleTheme /> */}
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>

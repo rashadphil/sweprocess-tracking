@@ -1,6 +1,7 @@
+import FacebookAuth from '../components/FacebookAuth'
 import GoogleAuth from '../components/GoogleAuth'
 
-export default function LoginPage({userData, setUserData} : any) {
+export default function LoginPage({ userData, setUserData }: any) {
   return (
     <>
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -20,32 +21,13 @@ export default function LoginPage({userData, setUserData} : any) {
               </span>
             </p>
           </div>
-            <GoogleAuth userData={userData} setUserData={setUserData}/>
-          <div className="">
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center my-3 py-4 px-0 border border-black text-sm font-medium rounded-md text-black bg-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <div className="flex items-center">
-                <img
-                  className="w-10 h-8 pr-2"
-                  src="//logo.clearbit.com/google.com"
-                />
-                Continue with Google
+          <div className="h-auto sm:w-full bg-white py-4 px-14 shadow-sm rounded-md border border-transparent border-gray-200">
+            <div className="flex justify-center">
+              <div className="w-full">
+                <GoogleAuth userData={userData} setUserData={setUserData} />
+                <FacebookAuth userData={userData} setUserData={setUserData} />
               </div>
-            </button>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center my-3 py-4 px-0 border border-black text-sm font-medium rounded-md text-black bg-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <div className="flex items-center">
-                <img
-                  className="w-10 h-8 pr-2"
-                  src="//logo.clearbit.com/meta.com"
-                />
-                Continue with Facebook
-              </div>
-            </button>
+            </div>
           </div>
 
           {/* <form className="mt-8 space-y-6" action="#" method="POST">
