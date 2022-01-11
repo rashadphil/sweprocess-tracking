@@ -34,19 +34,19 @@ export default function FilterCompanies({
   setFilter: (filter: string[]) => void
 }) {
   return (
-    <div className="w-full max-w-sm px-4 font-[Oceanwide]">
+    <div className="w-full max-w-sm px-2 font-[Oceanwide]">
       <Popover className="relative">
         {({ open }) => (
           <>
             <Popover.Button
               className={`
                 ${open ? '' : 'opacity-90'}
-                text-white group bg-orange-700 px-3 py-2 rounded-md inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+                text-black group bg-white px-3 py-1 rounded-full border-2 b-gray-200 inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
               <span>Filter</span>
               <AdjustmentsIcon
                 className={`${open ? '' : 'text-opacity-70'}
-                  ml-2 h-5 w-5 text-orange-300 group-hover:text-opacity-80 transition ease-in-out duration-150`}
+                  ml-2 h-5 w-5 text-black group-hover:text-opacity-80 transition ease-in-out duration-150`}
                 aria-hidden="true"
               />
             </Popover.Button>
