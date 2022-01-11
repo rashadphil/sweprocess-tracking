@@ -26,10 +26,10 @@ model user_companies {
   company_name String?             @db.VarChar(255)
   companies    companies           @relation(fields: [company_id], references: [cid], onDelete: NoAction)
   users        users               @relation(fields: [user_id], references: [uid], onDelete: Cascade)
-  season       season?             
+  szn          season              @default(s22) 
 
-  @@id([user_id, company_id], map: "user_company_id")
-  @@unique([user_id, company_id], map: "user_companies_user_company_unique")
+  @@id([user_id, company_id, szn], map: "user_company_id")
+  @@unique([user_id, company_id, szn], map: "user_companies_user_company_unique")
 }
 
 model users {

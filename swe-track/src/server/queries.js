@@ -84,22 +84,24 @@ const getCompanyById = async (req, res) => {
 }
 
 const upsertUserCompany = async (req, res) => {
-  const { user_id, company_id, user_status, date_applied } = req.body
+  const { user_id, company_id, user_status, date_applied, season } = req.body
   const companyInfo = await prisma.companies.findFirst({
     where: { cid: company_id }
   })
   const { company_name } = companyInfo
   const userCompany = await prisma.user_companies.upsert({
     where: {
-      user_id_company_id: {
+      user_id_company_id_szn: {
         user_id: user_id,
-        company_id: company_id
+        company_id: company_id,
+        szn: season
       }
     },
     update: { user_status: user_status || 'applied' },
     create: {
       user_id: user_id,
       company_id: company_id,
+      szn: season,
       company_name: company_name,
       user_status: user_status || 'applied',
       date_applied: date_applied || new Date()
@@ -147,6 +149,7 @@ const getCompaniesByUserId = async (req, res) => {
   const usersCompanies = await prisma.user_companies.findMany({
     where: {
       user_id: parseInt(req.params.uid),
+      szn: req.params.szn || 's22',
       OR: statusFilter
     },
     orderBy: orderBy

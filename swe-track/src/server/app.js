@@ -91,7 +91,7 @@ app.get('/leetcode/tags/:tid', (req, res) => {
 app.post('/userleetcode', (req, res) => {
   db.upsertUserLeetcode(req, res)
 })
-app.get('/userleetcode/id/:uid', (req, res) => {
+app.get('/userleetcode/id/:uid/:szn', (req, res) => {
   db.getLeetcodeByUserId(req, res)
 })
 app.delete('/userleetcode/:uid/:lid', (req, res) => {
