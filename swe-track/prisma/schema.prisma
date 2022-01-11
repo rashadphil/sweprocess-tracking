@@ -26,6 +26,7 @@ model user_companies {
   company_name String?             @db.VarChar(255)
   companies    companies           @relation(fields: [company_id], references: [cid], onDelete: NoAction)
   users        users               @relation(fields: [user_id], references: [uid], onDelete: Cascade)
+  season       season?             
 
   @@id([user_id, company_id], map: "user_company_id")
   @@unique([user_id, company_id], map: "user_companies_user_company_unique")
@@ -102,4 +103,13 @@ enum membership_status {
   free
   tier1
   tier2
+}
+
+enum season {
+  s22
+  w22
+  ng22
+  s23
+  w23
+  ng23
 }
