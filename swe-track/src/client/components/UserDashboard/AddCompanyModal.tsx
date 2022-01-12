@@ -33,25 +33,14 @@ type EntryProps = {
 export default function AddCompanyModal({
   season,
   userData,
-  setUserData
+  setUserData,
+  newEntry,
+  setNewEntry
 }: any) {
   const [currentTab, setCurrentTab] = useState(0)
   const [allCompanyData, setAllCompanyData] = useState<any[]>([])
   const [displayCompanies, setDisplayCompanies] = useState<any[]>([])
   const [searchTerm, setSearchTerm] = useState<string>('')
-  const defaultCompanyData = {
-    application_link: null,
-    cid: null,
-    company_name: null,
-    intern_salary: null,
-    popularity: null,
-    website_link: null
-  }
-  const [newEntry, setNewEntry] = useState<EntryProps>({
-    companyData: defaultCompanyData,
-    status: '',
-    date: null
-  })
   useEffect(() => {
     if (allCompanyData.length == 0) getAllCompanyData()
   }, [])
@@ -100,7 +89,7 @@ export default function AddCompanyModal({
     })
 
     setNewEntry({
-      companyData: defaultCompanyData,
+      companyData: {},
       status: '',
       date: null
     })

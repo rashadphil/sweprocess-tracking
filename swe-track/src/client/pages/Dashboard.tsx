@@ -13,6 +13,12 @@ type TableSortProps = {
   user_status: string
   date_applied: string
 }
+type EntryProps = {
+  companyData: any
+  status: string
+  date: Date | null
+}
+
 export default function Dashboard({ userData, setUserData }: any) {
   const [companies, setCompanies] = useState([])
   const [season, setSeason] = useState('s22')
@@ -52,6 +58,11 @@ export default function Dashboard({ userData, setUserData }: any) {
     )
     setCompanies(userCompanies)
   }
+  const [newEntry, setNewEntry] = useState<EntryProps>({
+    companyData: {},
+    status: '',
+    date: null
+  })
   const [first, last] = userData.full_name.split(' ')
   return (
     <div className="bg-white mt-0.5 pt-14 overflow-x-auto">
@@ -73,6 +84,8 @@ export default function Dashboard({ userData, setUserData }: any) {
                 season={season}
                 userData={userData}
                 setUserData={setUserData}
+                newEntry={newEntry}
+                setNewEntry={setNewEntry}
               />
             </div>
           </div>

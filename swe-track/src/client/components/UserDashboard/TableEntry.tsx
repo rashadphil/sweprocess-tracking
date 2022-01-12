@@ -50,7 +50,8 @@ export default function TableEntry({
       company_id: company_id,
       user_id: user_id,
       user_status: user_status,
-      date_applied: date_applied
+      date_applied: date_applied,
+      szn: szn
     }
     typeof change === 'string'
       ? (data.user_status = change)
