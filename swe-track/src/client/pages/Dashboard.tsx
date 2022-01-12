@@ -82,7 +82,6 @@ export default function Dashboard({ userData, setUserData }: any) {
               setStatusFilter={setStatusFilter}
             />
           </div>
-          <DateSelect />
           <Table
             entries={companies}
             tableSort={tableSort}

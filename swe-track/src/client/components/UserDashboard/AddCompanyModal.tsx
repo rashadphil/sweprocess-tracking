@@ -2,8 +2,8 @@ import { Popover, Transition, Tab } from '@headlessui/react'
 import { ChevronDownIcon, PlusIcon, PlusSmIcon } from '@heroicons/react/solid'
 import axios from 'axios'
 import { Fragment, useEffect, useState } from 'react'
+import DateSelect from '../DateSelect'
 import SearchBar from '../SearchBar'
-import DatePick from './DatePick'
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')
@@ -24,7 +24,11 @@ const statusColors = {
   rejected: 'red'
 }
 
-export default function AddCompanyModal({ season, userData, setUserData }: any) {
+export default function AddCompanyModal({
+  season,
+  userData,
+  setUserData
+}: any) {
   const [currentTab, setCurrentTab] = useState(0)
   const [allCompanyData, setAllCompanyData] = useState<any[]>([])
   const [displayCompanies, setDisplayCompanies] = useState<any[]>([])
@@ -129,7 +133,7 @@ export default function AddCompanyModal({ season, userData, setUserData }: any) 
               leaveTo="opacity-0 translate-y-1"
             >
               {/* <Popover.Panel className="absolute z-10 w-full max-w-sm px-4 mt-3 transform -translate-x-1/2 bg-white shadow-xl rounded-xl left-1/2 sm:px-0 lg:max-w-3xl"> */}
-              <Popover.Panel className="absolute z-10 w-72 px-4 mt-3 sm:px-0 lg:max-w-3xl left-1/2  transform -translate-x-1/2 bg-white shadow-xl rounded-xl">
+              <Popover.Panel className="absolute z-10 w-72 px-4 mt-3 sm:px-0 lg:max-w-3xl left-1/4  transform -translate-x-1/2 bg-white shadow-xl rounded-xl">
                 <div className="w-full max-w-md px-2 py-1 sm:px-0">
                   <Tab.Group
                     key={currentTab}
@@ -249,7 +253,7 @@ export default function AddCompanyModal({ season, userData, setUserData }: any) 
                         className={classNames('bg-white  rounded-xl px-3 ')}
                       >
                         <div className="overflow-scroll h-72">
-                          <DatePick></DatePick>
+                          <DateSelect />
                         </div>
                       </Tab.Panel>
                     </Tab.Panels>
