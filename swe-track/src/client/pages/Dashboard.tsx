@@ -60,6 +60,9 @@ export default function Dashboard({ userData, setUserData }: any) {
             <h3 className="text-left ml-3 text-3xl font-[Oceanwide] dark:text-white">
               {first}'s Applications
             </h3>
+          </div>
+          <div className="ml-3 w-full inline-flex justify-between">
+            <SeasonSpan activeSeason={season} setActiveSeason={setSeason} />
             <div className="inline-flex">
               <FilterCompanies
                 filter={statusFilter}
@@ -71,9 +74,6 @@ export default function Dashboard({ userData, setUserData }: any) {
                 setUserData={setUserData}
               />
             </div>
-          </div>
-          <div className="ml-3 w-full inline-flex">
-            <SeasonSpan activeSeason={season} setActiveSeason={setSeason} />
           </div>
           <div className="ml-3 mt-3 w-full inline-flex flex-row">
             <CurrentFiltersSpan

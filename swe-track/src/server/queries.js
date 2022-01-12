@@ -145,7 +145,6 @@ const getCompaniesByUserId = async (req, res) => {
         return { [property]: order }
       })
     : undefined
-  console.log(orderBy)
   const usersCompanies = await prisma.user_companies.findMany({
     where: {
       user_id: parseInt(req.params.uid),
@@ -245,7 +244,6 @@ const getLeetcodeByUserId = async (req, res) => {
         return { [property]: order }
       })
     : undefined
-  console.log(orderBy)
   const userLeetcode = await prisma.leetcode.findMany({
     where: {
       AND: [
