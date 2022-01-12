@@ -6,6 +6,7 @@ import AddCompanyModal from '../components/UserDashboard/AddCompanyModal'
 import FilterCompanies from '../components/UserDashboard/FilterCompanies'
 import CurrentFiltersSpan from '../components/UserDashboard/CurrentFiltersSpan'
 import SeasonSpan from '../components/UserDashboard/SeasonSpan'
+import DateSelect from '../components/DateSelect'
 
 type TableSortProps = {
   company_name: string
@@ -81,6 +82,7 @@ export default function Dashboard({ userData, setUserData }: any) {
               setStatusFilter={setStatusFilter}
             />
           </div>
+          <DateSelect />
           <Table
             entries={companies}
             tableSort={tableSort}
