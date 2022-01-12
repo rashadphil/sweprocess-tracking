@@ -1,8 +1,16 @@
-import { XCircleIcon } from '@heroicons/react/solid'
+import { XCircleIcon } from '@heroicons/react/outline'
 
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(' ')
 }
+
+type EntryProps = {
+  companyData: any
+  status: string
+  date: Date | null
+}
+
+const toSnakeCase = (str: string) => str.replaceAll(' ', '_')
 
 const statusColors: Record<string, string> = {
   offer: 'green',
@@ -23,16 +31,56 @@ const removeItem = (array: any[], value: any) => {
   return array.filter(item => item !== value)
 }
 
-function StatusFilterSpan({
-  statusFilter,
-  setStatusFilter
+export default function CurrentCompanySpan({
+  newEntry,
+  setNewEntry
 }: {
-  statusFilter: string[]
-  setStatusFilter: (value: string[]) => void
+  newEntry: EntryProps
+  setNewEntry: (value: EntryProps) => void
 }) {
+  const { companyData, status, date } = newEntry
+  const { company_name } = companyData
+  const bgColor = `bg-${statusColors[toSnakeCase(status)]}-200`
+  const textColor = `text-${statusColors[toSnakeCase(status)]}-600`
   return (
-    <div>
-      {statusFilter.map(status => {
+    <div className="flex flex-wrap h-0 ">
+      {company_name ? (
+        <div className="text-md inline-flex rounded-full border border-gray-300 py-0.5 px-2 mx-1">
+          <img
+            className="w-5 h-5 mr-1 object-scale-down block m-auto"
+            src={`//logo.clearbit.com/${company_name}.com`}
+          />
+          <span className={classNames('font-[Oceanwide] ')}>
+            {capitalize(company_name)}
+          </span>
+          <XCircleIcon
+            className="ml-1 w-3 h-3  hover:cursor-pointer block m-auto"
+            onClick={() => setNewEntry({ ...newEntry, companyData: {} })}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {status ? (
+        <div
+          className={classNames(
+            `text-md inline-flex rounded-full border border-gray-300 py-0.5 px-2 mx-1 ${textColor} ${bgColor}`
+          )}
+        >
+          <span className={classNames(`font-[Oceanwide]  `)}>
+            {capitalize(status)}
+          </span>
+          <XCircleIcon
+            className="ml-1 w-3 h-3  hover:cursor-pointer block m-auto"
+            onClick={() => setNewEntry({ ...newEntry, status: '' })}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
+      {/* {date} */}
+      {/* {statusFilter.map(status => {
         const bgColor = `bg-${statusColors[status]}-200`
         const textColor = `text-${statusColors[status]}-600`
         return (
@@ -49,24 +97,7 @@ function StatusFilterSpan({
             />
           </span>
         )
-      })}
-    </div>
-  )
-}
-
-export default function CurrentFiltersSpan({
-  statusFilter,
-  setStatusFilter
-}: {
-  statusFilter: string[]
-  setStatusFilter: (value: string[]) => void
-}) {
-  return (
-    <div className="flex flex-wrap ">
-      <StatusFilterSpan
-        statusFilter={statusFilter}
-        setStatusFilter={setStatusFilter}
-      />
+      })} */}
     </div>
   )
 }

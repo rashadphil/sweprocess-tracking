@@ -85,7 +85,7 @@ export default function AddCompanyModal({
       company_name: company_name,
       user_status: status.replace(' ', '_'),
       date_applied: date || new Date(),
-      season: season
+      szn: season
     })
 
     setNewEntry({

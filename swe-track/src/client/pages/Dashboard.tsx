@@ -7,6 +7,7 @@ import FilterCompanies from '../components/UserDashboard/FilterCompanies'
 import CurrentFiltersSpan from '../components/UserDashboard/CurrentFiltersSpan'
 import SeasonSpan from '../components/UserDashboard/SeasonSpan'
 import DateSelect from '../components/DateSelect'
+import CurrentCompanySpan from '../components/UserDashboard/CurrentCompanySpan'
 
 type TableSortProps = {
   company_name: string
@@ -27,6 +28,11 @@ export default function Dashboard({ userData, setUserData }: any) {
     company_name: '',
     user_status: 'desc',
     date_applied: ''
+  })
+  const [newEntry, setNewEntry] = useState<EntryProps>({
+    companyData: {},
+    status: '',
+    date: null
   })
 
   useEffect(() => {
@@ -58,11 +64,6 @@ export default function Dashboard({ userData, setUserData }: any) {
     )
     setCompanies(userCompanies)
   }
-  const [newEntry, setNewEntry] = useState<EntryProps>({
-    companyData: {},
-    status: '',
-    date: null
-  })
   const [first, last] = userData.full_name.split(' ')
   return (
     <div className="bg-white mt-0.5 pt-14 overflow-x-auto">
@@ -72,6 +73,7 @@ export default function Dashboard({ userData, setUserData }: any) {
             <h3 className="text-left ml-3 text-3xl font-[Oceanwide] dark:text-white">
               {first}'s Applications
             </h3>
+            <CurrentCompanySpan newEntry={newEntry} setNewEntry={setNewEntry} />
           </div>
           <div className="ml-3 w-full inline-flex justify-between">
             <SeasonSpan activeSeason={season} setActiveSeason={setSeason} />
