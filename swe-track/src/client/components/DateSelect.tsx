@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { format } from 'date-fns'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
@@ -15,17 +15,45 @@ const CustomInput = forwardRef(({ value, onClick }: any, ref: any) => (
   </div>
 ))
 
-export default function DateSelect() {
-  const [startDate, setStartDate] = useState<Date>(new Date())
+const TodayButton = () => (
+  <button className="text-gray-500 hover:text-gray-700 hover:border-gray-700 border-2 px-8 rounded-md my-1">
+    Today
+  </button>
+)
+type EntryProps = {
+  companyData: any
+  status: string
+  date: Date | null
+}
+
+type DateSelectProps = {
+  newEntry: EntryProps
+  setNewEntry: (entry: EntryProps) => void
+  closePopover: () => void
+}
+
+export default function DateSelect({
+  newEntry,
+  setNewEntry,
+  closePopover
+}: DateSelectProps) {
+  const [selectedDate, setSelectedDate] = useState<Date>()
+  useEffect(() => {
+    if (selectedDate) {
+      setNewEntry({ ...newEntry, date: selectedDate })
+      closePopover()
+    }
+  }, [selectedDate])
   return (
     <div className="relative w-full">
       <DatePicker
-        selected={startDate}
-        onChange={date => setStartDate(date || new Date())}
+        selected={selectedDate}
+        onChange={date => setSelectedDate(date || new Date())}
         dateFormat="dd MMM yyyy"
-        startDate={startDate}
+        startDate={selectedDate}
         fixedHeight
         inline={true}
+        todayButton={<TodayButton />}
         popperClassName="react-datepicker-left"
         customInput={<CustomInput />}
         nextMonthButtonLabel=">"

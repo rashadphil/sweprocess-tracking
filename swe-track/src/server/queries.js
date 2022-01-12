@@ -97,7 +97,10 @@ const upsertUserCompany = async (req, res) => {
         szn: season
       }
     },
-    update: { user_status: user_status || 'applied' },
+    update: {
+      user_status: user_status || 'applied',
+      date_applied: date_applied
+    },
     create: {
       user_id: user_id,
       company_id: company_id,
