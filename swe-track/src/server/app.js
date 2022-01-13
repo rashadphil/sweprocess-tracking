@@ -75,6 +75,9 @@ app.get('/usercompany', (req, res) => {
 app.get('/usercompany/id/:uid/:szn', (req, res) => {
   db.getCompaniesByUserId(req, res)
 })
+app.get('/usercompany/:szn', (req, res) => {
+  db.getProcessTracking(req, res)
+})
 app.delete('/usercompany/:uid/:cid/:szn', (req, res) => {
   db.deleteUserCompany(req, res)
 })

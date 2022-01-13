@@ -189,6 +189,21 @@ const updatePopularity = async (cid, amount) => {
   })
 }
 
+const getProcessTracking = async (req, res) => {
+  const szn = req.params.szn
+  const process = await prisma.user_companies.groupBy({
+    by: ['user_status', 'company_name'],
+    _count: {
+      user_id: true
+    },
+    orderBy: {
+      company_name: 'asc'
+    }
+  })
+  res.status(200).json(process)
+  return process
+}
+
 /**
  * Leetcode
  */
@@ -316,6 +331,7 @@ module.exports = {
   upsertUserCompany,
   getAllUserCompanies,
   getCompaniesByUserId,
+  getProcessTracking,
   deleteUserCompany,
   getAllLeetcode,
   getProblemsFromTag,
