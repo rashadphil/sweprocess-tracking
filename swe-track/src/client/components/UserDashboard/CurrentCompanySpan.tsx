@@ -48,7 +48,7 @@ export default function CurrentCompanySpan({
         <div className="text-md inline-flex rounded-full border border-gray-300 py-0.5 px-2 mx-1">
           <img
             className="w-5 h-5 mr-1 object-scale-down block m-auto"
-            src={`//logo.clearbit.com/${company_name}.com`}
+            src={`//logo.clearbit.com/${company_name.replaceAll(' ', '')}.com`}
           />
           <span className={classNames('font-[Oceanwide] ')}>
             {capitalize(company_name)}
