@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import AddCompanyModal from './components/UserDashboard/AddCompanyModal'
 import LeetcodeDashboard from './pages/LeetcodeDashboard'
+import ProcessTracking from './pages/ProcessTracking'
 
 function App() {
   const [userData, setUserData] = useState(
@@ -38,6 +39,7 @@ function App() {
                 />
               }
             />
+            <Route path="process-tracking" element={<ProcessTracking />} />
             <Route
               path="login"
               element={

@@ -191,7 +191,8 @@ const updatePopularity = async (cid, amount) => {
 
 const getProcessTracking = async (req, res) => {
   const szn = req.params.szn
-  const process = await prisma.user_companies.groupBy({
+  const response = await prisma.user_companies.groupBy({
+    where: { szn: szn },
     by: ['user_status', 'company_name'],
     _count: {
       user_id: true
@@ -200,7 +201,31 @@ const getProcessTracking = async (req, res) => {
       company_name: 'asc'
     }
   })
-  res.status(200).json(process)
+
+  const processTracking = response.map(company => {
+    const { company_name, user_status } = company
+    return {
+      company_name: company_name,
+      user_status: user_status,
+      count: company._count.user_id
+    }
+  })
+  const processMap = new Map()
+  processTracking.forEach(obj => {
+    const { company_name, user_status, count } = obj
+    processMap.set(company_name, {
+      ...processMap.get(company_name),
+      [user_status]: count
+    })
+  })
+  const processArray = Array.from(
+    processMap,
+    ([company_name, status_counts]) => ({
+      company_name,
+      status_counts
+    })
+  )
+  res.status(200).json(processArray)
   return process
 }
 

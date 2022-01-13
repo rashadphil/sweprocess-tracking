@@ -6,12 +6,14 @@ import { Link, NavLink } from 'react-router-dom'
 
 const loggedOutNavigation = [
   { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' }
+  { name: 'About', href: '/about' },
+  { name: 'Process Tracking', href: '/process-tracking' }
 ]
 
 const loggedInNavigation = [
   { name: 'Dashboard', href: '/dashboard' },
-  { name: 'Leetcode', href: '/leetcode' }
+  { name: 'Leetcode', href: '/leetcode' },
+  { name: 'Process Tracking', href: '/process-tracking' }
 ]
 
 const registration = [
