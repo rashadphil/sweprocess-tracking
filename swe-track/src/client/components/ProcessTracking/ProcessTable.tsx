@@ -4,11 +4,16 @@ import {
   SelectorIcon
 } from '@heroicons/react/solid'
 
+function classNames(...classes: any[]) {
+  return classes.filter(Boolean).join(' ')
+}
+
 type SortIconProps = {
   className: string
   sort: string
   onClick: () => void
 }
+
 function SortIcon({ className, sort, onClick }: SortIconProps) {
   switch (sort) {
     case '':
@@ -38,12 +43,22 @@ type TableSortProps = {
   date_applied: string
 }
 type HeaderProps = {
-  className: string
+  className?: string
   title: string
   type: string
-  tableSort: TableSortProps
-  setTableSort: (value: TableSortProps) => void
+  tableSort?: TableSortProps
+  setTableSort?: (value: TableSortProps) => void
 }
+
+const statusColors = new Map<string, string>([
+  ['offer', 'green'],
+  ['final_round', 'blue'],
+  ['interview_rounds', 'yellow'],
+  ['online_assessment', 'pink'],
+  ['applied', 'orange'],
+  ['not_applied', 'gray'],
+  ['rejected', 'red']
+])
 
 function Header({
   className,
@@ -52,18 +67,26 @@ function Header({
   tableSort,
   setTableSort
 }: HeaderProps) {
-  const sort = (tableSort as any)[type]
+  // const sort = (tableSort as any)[type]
+  const color = statusColors.get(type) || ''
+  const textColor = `text-${color}-600`
+  const bgColor = `bg-${color}-200`
   return (
-    <th className={className}>
-      <div className="inline-flex">
-        {title}
-        <SortIcon
+    <th
+      className={
+        className ||
+        'py-2 px-3 border bg-gray-200 border-transparent border-gray-400 w-20 text-bold'
+      }
+    >
+      <div className="flex space-x-1 items-center">
+        <span className={classNames(``)}>{title}</span>
+        {/* <SortIcon
           className="pl-1 w-5 h-5 hover:cursor-pointer"
           sort={sort}
           onClick={() => {
             setTableSort({ ...tableSort, [type]: nextSort.get(sort) })
           }}
-        />
+        /> */}
       </div>
     </th>
   )
@@ -74,22 +97,32 @@ export default function ProcessTable({ entries }: { entries: any }) {
     {
       title: 'Company',
       type: 'company_name',
-      className: 'px-6 py-3 text-left'
+      className:
+        'px-6 py-3 text-left bg-gray-200 border border-transparent border-gray-400 w-14 text-bold'
     },
     {
-      title: 'Status',
-      type: 'user_status',
-      className: 'px-6 py-3 text-center'
+      title: 'Rejected',
+      type: 'rejected'
     },
     {
-      title: 'Date Applied',
-      type: 'date_applied',
-      className: 'px-6 py-3 text-left'
+      title: 'Applied',
+      type: 'applied'
     },
     {
-      title: 'LC Problems',
-      type: '',
-      className: 'px-6 py-3 text-center'
+      title: 'Assessment',
+      type: 'online_assessment'
+    },
+    {
+      title: 'Interview',
+      type: 'interview_rounds'
+    },
+    {
+      title: 'Final',
+      type: 'final_round'
+    },
+    {
+      title: 'Offer',
+      type: 'offer'
     }
   ]
   return (
@@ -100,14 +133,13 @@ export default function ProcessTable({ entries }: { entries: any }) {
             {headers.map(header => {
               const { title, type, className } = header
               return (
-                <></>
-                // <Header
-                //   className={className}
-                //   title={title}
-                //   type={type}
-                //   tableSort={tableSort}
-                //   setTableSort={setTableSort}
-                // />
+                <Header
+                  className={className}
+                  title={title}
+                  type={type}
+                  // tableSort={tableSort}
+                  // setTableSort={setTableSort}
+                />
               )
             })}
           </tr>

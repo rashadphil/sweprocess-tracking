@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Table from '../components/UserDashboard/Table'
-import TableEntry from '../components/UserDashboard/TableEntry'
+import TableEntry from '../components/ProcessTracking/TableEntry'
 import axios from 'axios'
 import AddCompanyModal from '../components/UserDashboard/AddCompanyModal'
 import FilterCompanies from '../components/UserDashboard/FilterCompanies'
@@ -18,13 +18,13 @@ type TableSortProps = {
 
 type EntryProps = {
   company_name: string
-  statusCounts: {
-    offer: number
-    final_round: number
-    interview_rounds: number
-    online_assesment: number
-    applied: number
-    rejected: number
+  status_counts: {
+    offer?: number
+    final_round?: number
+    interview_rounds?: number
+    online_assesment?: number
+    applied?: number
+    rejected?: number
   }
 }
 
@@ -37,21 +37,15 @@ export default function ProcessTracking() {
       `http://localhost:8080/usercompany/${season}`
     )
     const data = response.data
-    console.log(data)
-    // const userCompanies = data.map(
-    //   (entry: {
-    //     company_name: string
-    //     user_status: string
-    //     date_applied: Date
-    //     szn: string
-    //   }) => <TableEntry userCompanyData={entry} setUserData={setUserData} />
-    // )
-    // setEntries(userCompanies)
+    const processEntries = data.map((entry: EntryProps) => (
+      <TableEntry entry={entry} />
+    ))
+    setEntries(processEntries)
   }
 
   useEffect(() => {
     getProcessTracking(season)
-  }, [])
+  }, [season])
   return (
     <div className="bg-white mt-0.5 pt-14 overflow-x-auto">
       <div className="flex justify-center min-h-screen overflow-hidden font-sans min-w-screen bg-white-400">
@@ -66,11 +60,6 @@ export default function ProcessTracking() {
           </div>
           <div className="ml-3 mt-3 w-full inline-flex flex-row"></div>
           <ProcessTable entries={entries} />
-          {/* <Table
-            entries={companies}
-            tableSort={tableSort}
-            setTableSort={setTableSort}
-          /> */}
         </div>
       </div>
     </div>
